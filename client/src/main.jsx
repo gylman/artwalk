@@ -9,6 +9,7 @@ import { Home } from "./pages/home";
 import { Challenges } from "./pages/challenges";
 import { Walk } from "./pages/challenges-slug-walk";
 import { Finish } from "./pages/challenges-slug-finish";
+import { Similarity } from "./pages/challenges-slug-similarity";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: "/challenges/:slug/finish",
     element: <Finish />,
+  },
+  {
+    path: "/challenges/:slug/similarity",
+    element: <Similarity />,
   },
 ]);
 

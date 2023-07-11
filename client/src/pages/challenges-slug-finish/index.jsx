@@ -3,10 +3,19 @@ import IconButton from "@mui/material/IconButton";
 import BackIcon from "@mui/icons-material/ArrowBack";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Layout } from "../../components/Layout";
+import { useState } from "react";
+import { animated, useSpringValue } from "@react-spring/web";
 
 export function Finish() {
   const { slug } = useParams();
   const navigate = useNavigate();
+
+  const [similarityState, setSimilarityState] = useState({
+    progress: 0, // 0 to 1
+    result: 0, // 0 to 1
+  });
+
+  const opacity = useSpringValue(0);
 
   return (
     <Layout
@@ -35,6 +44,7 @@ export function Finish() {
           width: "100%",
           height: "100%",
           padding: "32px",
+          paddingTop: "72px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
@@ -64,16 +74,19 @@ export function Finish() {
           Canvas here
         </div>
 
-        <Button
-          variant="contained"
-          style={{
-            flexShrink: 0,
-            borderRadius: "20px",
-            fontSize: "16px",
-          }}
-        >
-          Check Similarity
-        </Button>
+        <Link to={`/challenges/${slug}/similarity`}>
+          <Button
+            variant="contained"
+            style={{
+              width: "100%",
+              flexShrink: 0,
+              borderRadius: "20px",
+              fontSize: "16px",
+            }}
+          >
+            Check Similarity
+          </Button>
+        </Link>
       </div>
     </Layout>
   );
