@@ -33,8 +33,8 @@ const lineWidthStops = [
   [15, 13],
   [24, 32],
 ];
+const circleRadiusStops = lineWidthStops;
 
-const EPSILON = 1e-4;
 const PATH_SEPARATION_THRESHOLD = 0.003;
 
 const MapContext = createContext();
@@ -94,8 +94,7 @@ export function MapProvider({ children }) {
     setPaths((paths) => {
       const lastPoint = paths.at(-1)?.at(-1);
       if (!lastPoint) {
-        // XXX: EPSILON added to prevent degenerated lines
-        return [[[lng + EPSILON, lat], [lng, lat]]];
+        return [[[lng, lat]]];
       }
 
       const distance = Math.hypot(lastPoint[0] - lng, lastPoint[1] - lat);
@@ -106,7 +105,7 @@ export function MapProvider({ children }) {
         ]];
       } else {
         // XXX: EPSILON added to prevent degenerated lines
-        return [...paths, [[lng + EPSILON, lat], [lng, lat]]];
+        return [...paths, [[lng, lat]]];
       }
     });
   }, [setPaths]);
@@ -118,36 +117,57 @@ export function MapProvider({ children }) {
     if (!isLoaded) return;
     if (!map.current) return;
 
-    setTimeout(() => {
-      map.current.addSource("path", {
-        type: "geojson",
-        data: {
-          type: "Feature",
-          properties: {},
-          geometry: {
-            type: "MultiLineString",
-            coordinates: paths,
-          },
+    map.current.addSource("path", {
+      type: "geojson",
+      data: {
+        type: "Feature",
+        properties: {},
+        geometry: {
+          type: "MultiLineString",
+          coordinates: paths,
         },
-      });
-      map.current.addLayer({
-        id: "path",
-        type: "line",
-        source: "path",
-        layout: {
-          "line-join": "round",
-          "line-cap": "round",
+      },
+    });
+    map.current.addLayer({
+      id: "path",
+      type: "line",
+      source: "path",
+      layout: {
+        "line-join": "round",
+        "line-cap": "round",
+      },
+      paint: {
+        "line-color": "#f97316",
+        "line-width": {
+          type: "exponential",
+          base: 2,
+          stops: lineWidthStops,
         },
-        paint: {
-          "line-color": "#f97316",
-          "line-width": {
-            type: "exponential",
-            base: 2,
-            stops: lineWidthStops,
-          },
+      },
+    });
+
+    map.current.addSource("point", {
+      "type": "geojson",
+      "data": {
+        "type": "Point",
+        "coordinates": paths.at(-1)?.at(-1) ??
+          [DEFAULT_LONGITUDE, DEFAULT_LATITUDE],
+      },
+    });
+
+    map.current.addLayer({
+      "id": "point",
+      "source": "point",
+      "type": "circle",
+      "paint": {
+        "circle-radius": {
+          type: "exponential",
+          base: 2,
+          stops: circleRadiusStops,
         },
-      });
-    }, 1000);
+        "circle-color": "#fb923c",
+      },
+    });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded]);
@@ -164,6 +184,12 @@ export function MapProvider({ children }) {
         type: "MultiLineString",
         coordinates: paths,
       },
+    });
+
+    map.current.getSource("point")?.setData({
+      "type": "Point",
+      "coordinates": paths.at(-1)?.at(-1) ??
+        [DEFAULT_LONGITUDE, DEFAULT_LATITUDE],
     });
   }, [isLoaded, paths]);
 
