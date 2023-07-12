@@ -34,6 +34,9 @@ const lineWidthStops = [
   [24, 32],
 ];
 
+const EPSILON = 1e-4;
+const PATH_SEPARATION_THRESHOLD = 0.003;
+
 const MapContext = createContext();
 
 export function useMapContext() {
@@ -44,7 +47,7 @@ export function useMapContext() {
   return value;
 }
 
-function useWatchPosition({ callback, onError }) {
+function useWatchPosition({ callback, onError, period = 10_000 }) {
   const onErrorWithFallback = useCallback(() => {
     navigator.geolocation.getCurrentPosition(callback, onError, {
       enableHighAccuracy: true,
@@ -73,12 +76,12 @@ function useWatchPosition({ callback, onError }) {
         onErrorWithFallback,
         { enableHighAccuracy: true, maximumAge: 10000, timeout },
       );
-    }, 1000);
+    }, period);
 
     return () => {
       clearInterval(interval);
     };
-  }, [callback, onError, onErrorWithFallback]);
+  }, [callback, onError, onErrorWithFallback, period]);
 }
 
 export function MapProvider({ children }) {
@@ -86,47 +89,66 @@ export function MapProvider({ children }) {
   const map = useRef(null);
 
   const [isLoaded, setIsLoaded] = useState(false);
-  const [path, setPath] = useAtom(pathAtom);
+  const [paths, setPaths] = useAtom(pathAtom);
   const addPoint = useCallback((lng, lat) => {
-    setPath((p) => [...p, [lng, lat]]);
-  }, [setPath]);
-  const resetPath = useCallback(() => {
-    setPath([]);
-  }, [setPath]);
+    setPaths((paths) => {
+      const lastPoint = paths.at(-1)?.at(-1);
+      if (!lastPoint) {
+        // XXX: EPSILON added to prevent degenerated lines
+        return [[[lng + EPSILON, lat], [lng, lat]]];
+      }
+
+      const distance = Math.hypot(lastPoint[0] - lng, lastPoint[1] - lat);
+      if (distance < PATH_SEPARATION_THRESHOLD) {
+        return [...paths.slice(0, -1), [
+          ...paths.at(-1),
+          [lng, lat],
+        ]];
+      } else {
+        // XXX: EPSILON added to prevent degenerated lines
+        return [...paths, [[lng + EPSILON, lat], [lng, lat]]];
+      }
+    });
+  }, [setPaths]);
+  const resetPaths = useCallback(() => {
+    setPaths([]);
+  }, [setPaths]);
 
   useEffect(() => {
     if (!isLoaded) return;
     if (!map.current) return;
-    if (map.current.getSource("path")) return;
 
-    map.current.addSource("path", {
-      type: "geojson",
-      data: {
-        type: "Feature",
-        properties: {},
-        geometry: {
-          type: "LineString",
-          coordinates: path,
+    setTimeout(() => {
+      map.current.addSource("path", {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          properties: {},
+          geometry: {
+            type: "MultiLineString",
+            coordinates: paths,
+          },
         },
-      },
-    });
-    map.current.addLayer({
-      id: "path",
-      type: "line",
-      source: "path",
-      layout: {
-        "line-join": "round",
-        "line-cap": "round",
-      },
-      paint: {
-        "line-color": "#f97316",
-        "line-width": {
-          type: "exponential",
-          base: 2,
-          stops: lineWidthStops,
+      });
+      map.current.addLayer({
+        id: "path",
+        type: "line",
+        source: "path",
+        layout: {
+          "line-join": "round",
+          "line-cap": "round",
         },
-      },
-    });
+        paint: {
+          "line-color": "#f97316",
+          "line-width": {
+            type: "exponential",
+            base: 2,
+            stops: lineWidthStops,
+          },
+        },
+      });
+    }, 1000);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded]);
 
@@ -139,11 +161,11 @@ export function MapProvider({ children }) {
       type: "Feature",
       properties: {},
       geometry: {
-        type: "LineString",
-        coordinates: path,
+        type: "MultiLineString",
+        coordinates: paths,
       },
     });
-  }, [isLoaded, path]);
+  }, [isLoaded, paths]);
 
   return (
     <MapContext.Provider
@@ -152,9 +174,9 @@ export function MapProvider({ children }) {
         mapContainer,
         isLoaded,
         setIsLoaded,
-        path,
+        paths,
         addPoint,
-        resetPath,
+        resetPaths,
       }}
     >
       {children}
@@ -164,15 +186,19 @@ export function MapProvider({ children }) {
 
 export function Map() {
   const [isFollowing, setIsFollowing] = useState(true);
+  const isFollowingRef = useRef(false);
+  useEffect(() => {
+    isFollowingRef.current = isFollowing;
+  }, [isFollowing]);
 
   const {
     map,
     mapContainer,
     isLoaded,
     setIsLoaded,
-    path,
+    paths,
     addPoint,
-    resetPath,
+    resetPaths,
   } = useMapContext();
 
   const watchPositionCallback = useCallback(({ coords }) => {
@@ -180,13 +206,15 @@ export function Map() {
     const lat = coords.latitude;
 
     addPoint(lng, lat);
-    if (isFollowing) {
+    if (isFollowingRef.current) {
       map.current?.easeTo({ center: [lng, lat] });
     }
-  }, [addPoint, map, isFollowing]);
+  }, [addPoint, map]);
+
   const watchPositionOnError = useCallback((e) => {
     console.error(e);
   }, []);
+
   useWatchPosition({
     callback: watchPositionCallback,
     onError: watchPositionOnError,
@@ -196,8 +224,11 @@ export function Map() {
   useEffect(() => {
     if (map.current) return;
 
+    const container = mapContainer.current;
+    if (!container) return;
+
     map.current = new mapboxgl.Map({
-      container: mapContainer.current,
+      container,
       style: "mapbox://styles/mapbox/light-v11",
       center: [DEFAULT_LONGITUDE, DEFAULT_LATITUDE],
       zoom: DEFAULT_ZOOM,
@@ -210,6 +241,7 @@ export function Map() {
     return () => {
       map.current = undefined;
       setIsLoaded(false);
+      container.innerHTML = "";
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -257,7 +289,8 @@ export function Map() {
           } else {
             setIsFollowing(true);
             map.current.easeTo({
-              center: path.at(-1) ?? [DEFAULT_LONGITUDE, DEFAULT_LATITUDE],
+              center: paths.at(-1)?.at(-1) ??
+                [DEFAULT_LONGITUDE, DEFAULT_LATITUDE],
             });
           }
         }}

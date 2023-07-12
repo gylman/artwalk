@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import styled from "styled-components";
 import { Frame } from "../../components/Frame";
 import background from "./background.svg";
 import { useState } from "react";
