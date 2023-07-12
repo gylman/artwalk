@@ -1,15 +1,15 @@
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import BackIcon from "@mui/icons-material/ArrowBack";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Layout } from "../../components/Layout";
 import { useEffect, useState } from "react";
-import { animated, useSpringValue } from "@react-spring/web";
 import LinearProgress from "@mui/material/LinearProgress";
 import useWindowSize from "react-use/lib/useWindowSize";
 import Confetti from "react-confetti";
+import { useWarnOnBackButton } from "../../hooks/useWarnOnBackButton";
 
 export function Similarity() {
+  useWarnOnBackButton();
+
   const { slug } = useParams();
   const navigate = useNavigate();
 
@@ -31,27 +31,12 @@ export function Similarity() {
         flexDirection: "column",
       }}
     >
-      {/* Back button */}
-      <div
-        style={{
-          zIndex: 10,
-          position: "absolute",
-          top: 24,
-          left: 24,
-        }}
-      >
-        <IconButton aria-label="back" onClick={() => navigate(-1)}>
-          <BackIcon />
-        </IconButton>
-      </div>
-
       <div
         style={{
           position: "relative",
           width: "100%",
           height: "100%",
-          padding: "32px",
-          paddingTop: "72px",
+          padding: "24px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
@@ -60,26 +45,29 @@ export function Similarity() {
       >
         {isSimilarityComputed
           ? (
-            <p>
-              You have
-              <br />
-              <span
+            <section>
+              <p>
+                You have
+              </p>
+              <p
                 style={{
-                  fontSize: "32px",
+                  textAlign: "center",
+                  fontSize: "48px",
                   fontWeight: 700,
                 }}
               >
                 89%
-              </span>
-              <br />
-              of similarity with the original artwork. Amazing!
-
+              </p>
+              <p>
+                of similarity with the original artwork. Amazing!
+              </p>
               <Confetti
                 recycle={false}
                 width={width}
                 height={height}
+                numberOfPieces={300}
               />
-            </p>
+            </section>
           )
           : (
             <>

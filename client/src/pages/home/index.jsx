@@ -1,28 +1,10 @@
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import styled from "styled-components";
 import { Frame } from "../../components/Frame";
 import background from "./background.svg";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-
-const Button = styled.button`
-margin: 0 auto;
-border-radius: 24px;
-background-color: black;
-height: 48px;
-font-size: 16px;
-padding: 0 16px;
-transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-
-&:hover {
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px -1px, rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px;
-  background-color: #1f2937;
-}
-&:active {
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 5px -3px, rgba(0, 0, 0, 0.14) 0px 8px 10px 1px, rgba(0, 0, 0, 0.12) 0px 3px 14px 2px;
-  background-color: #4b5563;
-}
-`;
 
 export function Home() {
   // TODO: connect wallet
@@ -44,10 +26,10 @@ export function Home() {
     >
       <h1
         style={{
-          fontSize: 64,
+          fontSize: "64px",
           lineHeight: 1.125,
           fontWeight: 700,
-          padding: 32,
+          padding: "24px",
         }}
       >
         Own Your Workout
@@ -58,7 +40,7 @@ export function Home() {
           flexDirection: "column",
           justifyContent: "start",
           alignItems: "center",
-          padding: "32px",
+          padding: "24px",
         }}
       >
         <h2
@@ -88,13 +70,28 @@ export function Home() {
         {isWalletConnected
           ? (
             <Link to="/challenges">
-              <Button>
+              <Button
+                variant="contained"
+                color="primary"
+                style={{
+                  backgroundColor: "black",
+                  fontSize: 16,
+                  borderRadius: 20,
+                }}
+              >
                 GO TO CHALLENGE
               </Button>
             </Link>
           )
           : (
             <Button
+              variant="contained"
+              color="primary"
+              style={{
+                backgroundColor: "black",
+                fontSize: 16,
+                borderRadius: 20,
+              }}
               onClick={() => {
                 setIsWalletConnected(true);
               }}
