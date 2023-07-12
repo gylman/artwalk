@@ -13,7 +13,9 @@ function getTabIndexFromLocation({ pathname }) {
   return 1;
 }
 
-export function Layout({ children, ...props }) {
+export function Layout(
+  { children, isBottomNavigationHidden = false, ...props },
+) {
   const location = useLocation();
   const navigate = useNavigate();
   const index = useMemo(() => getTabIndexFromLocation(location), [location]);
@@ -27,34 +29,36 @@ export function Layout({ children, ...props }) {
     >
       {children}
 
-      <BottomNavigation
-        showLabels
-        style={{
-          position: "fixed",
-          bottom: 0,
-          left: 0,
-          width: "100%",
-          zIndex: 20,
-        }}
-        value={index}
-        onChange={(event, newValue) => {
-          if (newValue === index) return;
-          navigate(
-            [
-              "/profiles",
-              "/challenges",
-              "/favorites",
-            ][newValue],
-          );
-        }}
-      >
-        <BottomNavigationAction label="Profile" icon={<PersonIcon />} />
-        <BottomNavigationAction
-          label="Challenges"
-          icon={<DirectionsWalkIcon />}
-        />
-        <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-      </BottomNavigation>
+      {!isBottomNavigationHidden && (
+        <BottomNavigation
+          showLabels
+          style={{
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            width: "100%",
+            zIndex: 20,
+          }}
+          value={index}
+          onChange={(event, newValue) => {
+            if (newValue === index) return;
+            navigate(
+              [
+                "/profiles",
+                "/challenges",
+                "/favorites",
+              ][newValue],
+            );
+          }}
+        >
+          <BottomNavigationAction label="Profile" icon={<PersonIcon />} />
+          <BottomNavigationAction
+            label="Challenges"
+            icon={<DirectionsWalkIcon />}
+          />
+          <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
+        </BottomNavigation>
+      )}
     </Frame>
   );
 }
