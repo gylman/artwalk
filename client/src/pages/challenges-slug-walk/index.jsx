@@ -3,10 +3,21 @@ import IconButton from "@mui/material/IconButton";
 import BackIcon from "@mui/icons-material/ArrowBack";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Layout } from "../../components/Layout";
+import { useWarnOnBackButton } from "../../hooks/useWarnOnBackButton";
+import { useCallback } from "react";
+import { Map } from "../../components/Map";
 
 export function Walk() {
   const { slug } = useParams();
   const navigate = useNavigate();
+
+  const onBackButtonCallback = useCallback(() => {
+    const yes = confirm("Do you really want to quit walking?");
+    if (yes) {
+      navigate("/challenges", { replace: true });
+    }
+  }, [navigate]);
+  useWarnOnBackButton(onBackButtonCallback);
 
   return (
     <Layout
@@ -20,8 +31,8 @@ export function Walk() {
         style={{
           zIndex: 10,
           position: "absolute",
-          top: 24,
-          left: 24,
+          top: 12,
+          left: 12,
         }}
       >
         <IconButton aria-label="back" onClick={() => navigate(-1)}>
@@ -34,8 +45,8 @@ export function Walk() {
         style={{
           zIndex: 10,
           position: "absolute",
-          top: 24,
-          right: 24,
+          top: 12,
+          left: 12,
         }}
       >
       </div>
@@ -45,7 +56,7 @@ export function Walk() {
           position: "relative",
           width: "100%",
           height: "100%",
-          padding: "32px",
+          padding: "24px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
@@ -54,13 +65,14 @@ export function Walk() {
       >
         <div
           style={{
-            flex: "1 1 0%",
-            textAlign: "center",
-            backgroundColor: "#00000011",
-            borderRadius: "8px",
+            position: "fixed",
+            width: "100%",
+            height: "100%",
+            left: 0,
+            top: 0,
           }}
         >
-          Canvas here
+          <Map />
         </div>
 
         <Link
@@ -69,8 +81,10 @@ export function Walk() {
           <Button
             variant="contained"
             style={{
+              position: "absolute",
               flexShrink: 0,
-              width: "100%",
+              width: "calc(100% - 48px)",
+              bottom: 24,
               borderRadius: "20px",
               fontSize: "16px",
             }}

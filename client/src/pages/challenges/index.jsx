@@ -97,7 +97,7 @@ function TabPanel(props) {
       id={`full-width-tabpanel-${index}`}
       aria-labelledby={`full-width-tab-${index}`}
       style={{
-        padding: "32px 16px",
+        padding: "24px",
       }}
     >
       {value === index && (

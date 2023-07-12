@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material";
-import blue from "@mui/material/colors/blue";
+import { blue, grey } from "@mui/material/colors";
 import "./main.css";
 
 import { Home } from "./pages/home";
@@ -10,6 +10,7 @@ import { Challenges } from "./pages/challenges";
 import { Walk } from "./pages/challenges-slug-walk";
 import { Finish } from "./pages/challenges-slug-finish";
 import { Similarity } from "./pages/challenges-slug-similarity";
+import { MapProvider } from "./components/Map";
 
 const router = createBrowserRouter([
   {
@@ -41,13 +42,16 @@ const theme = createTheme({
   },
   palette: {
     primary: blue,
+    secondary: grey,
   },
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <RouterProvider router={router} />
+      <MapProvider>
+        <RouterProvider router={router} />
+      </MapProvider>
     </ThemeProvider>
   </React.StrictMode>,
 );

@@ -1,21 +1,9 @@
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import BackIcon from "@mui/icons-material/ArrowBack";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Layout } from "../../components/Layout";
-import { useState } from "react";
-import { animated, useSpringValue } from "@react-spring/web";
 
 export function Finish() {
   const { slug } = useParams();
-  const navigate = useNavigate();
-
-  const [similarityState, setSimilarityState] = useState({
-    progress: 0, // 0 to 1
-    result: 0, // 0 to 1
-  });
-
-  const opacity = useSpringValue(0);
 
   return (
     <Layout
@@ -24,27 +12,12 @@ export function Finish() {
         flexDirection: "column",
       }}
     >
-      {/* Back button */}
-      <div
-        style={{
-          zIndex: 10,
-          position: "absolute",
-          top: 24,
-          left: 24,
-        }}
-      >
-        <IconButton aria-label="back" onClick={() => navigate(-1)}>
-          <BackIcon />
-        </IconButton>
-      </div>
-
       <div
         style={{
           position: "relative",
           width: "100%",
           height: "100%",
-          padding: "32px",
-          paddingTop: "72px",
+          padding: "24px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
