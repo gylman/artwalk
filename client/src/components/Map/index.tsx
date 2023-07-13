@@ -159,7 +159,11 @@ export function Map() {
           ];
         }
 
-        const path: Path = [coordinate];
+        const lastCoordinate = lastGroup.paths.at(-1)?.at(-1) ?? [
+          DEFAULT_LONGITUDE,
+          DEFAULT_LATITUDE,
+        ];
+        const path: Path = [lastCoordinate, coordinate];
         createPath(map.current, styledPathGroups.length, path, currentStyle);
 
         return [
@@ -245,6 +249,17 @@ export function Map() {
       }
     });
   }, [map]);
+
+  useEffect(() => {
+    if (!map.current) return;
+    if (!isLoaded) return;
+
+    const lastCoordinate = styledPathGroups.at(-1)?.paths.at(-1)?.at(-1) ?? [
+      DEFAULT_LONGITUDE,
+      DEFAULT_LATITUDE,
+    ];
+    setCircle(map.current, lastCoordinate, currentStyle);
+  }, [currentStyle, isLoaded]);
 
   return (
     <div
