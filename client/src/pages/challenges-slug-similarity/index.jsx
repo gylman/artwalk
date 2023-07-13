@@ -26,6 +26,7 @@ export function Similarity() {
 
   return (
     <Layout
+      isBottomNavigationHidden
       style={{
         display: "flex",
         flexDirection: "column",

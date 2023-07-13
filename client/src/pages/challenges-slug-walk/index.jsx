@@ -21,6 +21,7 @@ export function Walk() {
 
   return (
     <Layout
+      isBottomNavigationHidden
       style={{
         display: "flex",
         flexDirection: "column",

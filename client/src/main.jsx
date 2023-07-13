@@ -10,6 +10,8 @@ import { Challenges } from "./pages/challenges";
 import { Walk } from "./pages/challenges-slug-walk";
 import { Finish } from "./pages/challenges-slug-finish";
 import { Similarity } from "./pages/challenges-slug-similarity";
+import { Profile } from "./pages/profiles";
+import { Favorites } from "./pages/favorites";
 import { MapProvider } from "./components/Map";
 
 const router = createBrowserRouter([
@@ -32,6 +34,18 @@ const router = createBrowserRouter([
   {
     path: "/challenges/:slug/similarity",
     element: <Similarity />,
+  },
+  {
+    path: "/profiles",
+    element: <Profile />,
+  },
+  {
+    path: "/profiles/:id",
+    element: <Profile />,
+  },
+  {
+    path: "/favorites",
+    element: <Favorites />,
   },
 ]);
 

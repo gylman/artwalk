@@ -7,6 +7,7 @@ export function Finish() {
 
   return (
     <Layout
+      isBottomNavigationHidden
       style={{
         display: "flex",
         flexDirection: "column",
