@@ -187,7 +187,7 @@ export function Map() {
       setLocationInitialized((locationInitialized) => {
         if (isFollowingRef.current && locationInitialized) {
           map.current?.easeTo({ center: [lng, lat] });
-        } else if (map.current) {
+        } else if (isFollowingRef.current && map.current) {
           map.current.setCenter([lng, lat]);
           setCircle(map.current, [lng, lat], currentStyle);
         }
