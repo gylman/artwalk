@@ -10,18 +10,10 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Fab from "@mui/material/Fab";
 import Slider from "@mui/material/Slider";
 import { useAtom } from "jotai";
-import mapboxgl, { GeoJSONSource } from "mapbox-gl";
+import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { type RgbColor, RgbColorPicker } from "react-colorful";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { RgbColorPicker } from "react-colorful";
 import { env } from "../../env";
 import {
   Path,
@@ -38,8 +30,8 @@ import {
   clearSources,
   createPath,
   isStyleSame,
-  setPathCoordinates,
   setCircle,
+  setPathCoordinates,
 } from "./utils";
 
 mapboxgl.accessToken = env.VITE_MAPBOX_API_KEY;

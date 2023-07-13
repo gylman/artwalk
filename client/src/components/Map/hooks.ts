@@ -1,32 +1,16 @@
-import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
-import MyLocationIcon from "@mui/icons-material/MyLocation";
-import PaletteIcon from "@mui/icons-material/Palette";
-import Button from "@mui/material/Button";
-import CircularProgress from "@mui/material/CircularProgress";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Fab from "@mui/material/Fab";
-import Slider from "@mui/material/Slider";
 import { type SetStateAction } from "jotai";
-import type { GeoJSONSource, Map } from "mapbox-gl";
+import type { Map } from "mapbox-gl";
 import {
-  type MutableRefObject,
-  type RefObject,
   createContext,
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useRef,
-  useState,
   type Dispatch,
+  type MutableRefObject,
+  type RefObject,
 } from "react";
-import { RgbColorPicker } from "react-colorful";
-import { env } from "../../env";
 import type { PathStyle, StyledPathGroup } from "../../state";
-import { getCirclePaint, getPathPaint } from "./utils";
 
 interface MapContext {
   map: MutableRefObject<Map | undefined>;

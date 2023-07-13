@@ -1,6 +1,6 @@
+import type { CircleLayer, GeoJSONSource, LineLayer } from "mapbox-gl";
 import type { RgbColor } from "react-colorful";
 import type { Path, PathStyle } from "../../state";
-import type { CircleLayer, GeoJSONSource, LineLayer } from "mapbox-gl";
 
 export const DEFAULT_LONGITUDE = 126.986;
 export const DEFAULT_LATITUDE = 37.541;
