@@ -392,21 +392,26 @@ function StyleModal({
         />
 
         <h2 style={{ fontSize: 16, margin: "16px 0 8px" }}>Line Width</h2>
-        <Slider
-          aria-label="line width"
-          value={styleBuffer.lineWidth}
-          valueLabelDisplay="auto"
-          step={50}
-          marks
-          min={50}
-          max={500}
-          onChange={(_, lineWidth) => {
-            setStyleBuffer((s) => ({
-              ...s,
-              lineWidth: lineWidth as number,
-            }));
-          }}
-        />
+        <div style={{ padding: "0 16px" }}>
+          <Slider
+            aria-label="line width"
+            value={styleBuffer.lineWidth}
+            valueLabelDisplay="auto"
+            step={50}
+            marks={[
+              { value: 50, label: "50m" },
+              { value: 500, label: "500m" },
+            ]}
+            min={50}
+            max={500}
+            onChange={(_, lineWidth) => {
+              setStyleBuffer((s) => ({
+                ...s,
+                lineWidth: lineWidth as number,
+              }));
+            }}
+          />
+        </div>
       </DialogContent>
 
       <DialogActions>
