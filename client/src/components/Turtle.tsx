@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 
-export function Turtle({ style }: { style: CSSProperties }) {
+export function Turtle({ style }: { style?: CSSProperties }) {
   return (
     <svg
       style={style}

@@ -4,7 +4,7 @@ import type { Path, PathStyle } from "../../state";
 
 export const DEFAULT_LONGITUDE = 126.986;
 export const DEFAULT_LATITUDE = 37.541;
-export const DEFAULT_ZOOM = 20;
+export const DEFAULT_ZOOM = 19;
 
 export function getPathPaint(style: PathStyle) {
   return {
@@ -57,7 +57,26 @@ export function setCircle(
           },
         },
       });
-    } catch {}
+    } catch {
+      console.log("failed to addSource point");
+      setTimeout(() => {
+        try {
+          map.addSource("point", {
+            type: "geojson",
+            data: {
+              type: "Feature",
+              properties: {},
+              geometry: {
+                type: "Point",
+                coordinates: coordinate,
+              },
+            },
+          });
+        } catch {
+          console.log("still failed to addSource point");
+        }
+      }, 900);
+    }
   }
 
   let layer = map.getLayer("point-layer") as CircleLayer;
@@ -65,13 +84,29 @@ export function setCircle(
     map.removeLayer("point-layer");
   }
   try {
-    map.addLayer({
-      id: "point-layer",
-      type: "circle",
-      source: "point",
-      paint: getCirclePaint(style),
-    });
-  } catch {}
+    if (!map.getLayer("point-layer"))
+      map.addLayer({
+        id: "point-layer",
+        type: "circle",
+        source: "point",
+        paint: getCirclePaint(style),
+      });
+  } catch {
+    console.log("failed to addLayer point");
+    setTimeout(() => {
+      try {
+        if (!map.getLayer("point-layer"))
+          map.addLayer({
+            id: "point-layer",
+            type: "circle",
+            source: "point",
+            paint: getCirclePaint(style),
+          });
+      } catch {
+        console.log("still failed to addLayer point");
+      }
+    }, 1000);
+  }
 }
 
 export function setPathCoordinates(
@@ -125,7 +160,26 @@ export function createPath(
           },
         },
       });
-    } catch {}
+    } catch {
+      console.log(`failed to add source path-${index}`);
+      setTimeout(() => {
+        try {
+          map.addSource(`path-${index}`, {
+            type: "geojson",
+            data: {
+              type: "Feature",
+              properties: {},
+              geometry: {
+                type: "MultiLineString",
+                coordinates: [coordinates],
+              },
+            },
+          });
+        } catch {
+          console.log(`still failed to add source path-${index}`);
+        }
+      }, 900);
+    }
   }
 
   let layer = map.getLayer(`path-layer-${index}`) as LineLayer;
@@ -136,17 +190,37 @@ export function createPath(
     }
   } else {
     try {
-      map.addLayer({
-        id: `path-layer-${index}`,
-        type: "line",
-        source: `path-${index}`,
-        layout: {
-          "line-join": "round",
-          "line-cap": "round",
-        },
-        paint: getPathPaint(style),
-      });
-    } catch {}
+      if (!map.getLayer(`path-layer-${index}`))
+        map.addLayer({
+          id: `path-layer-${index}`,
+          type: "line",
+          source: `path-${index}`,
+          layout: {
+            "line-join": "round",
+            "line-cap": "round",
+          },
+          paint: getPathPaint(style),
+        });
+    } catch {
+      console.log("failed to addLayer point");
+      setTimeout(() => {
+        try {
+          if (!map.getLayer(`path-layer-${index}`))
+            map.addLayer({
+              id: `path-layer-${index}`,
+              type: "line",
+              source: `path-${index}`,
+              layout: {
+                "line-join": "round",
+                "line-cap": "round",
+              },
+              paint: getPathPaint(style),
+            });
+        } catch {
+          console.log("still failed to addLayer point");
+        }
+      }, 1000);
+    }
   }
 }
 

@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 
-export function HiFive({ style }: { style: CSSProperties }) {
+export function HiFive({ style }: { style?: CSSProperties }) {
   return (
     <svg
       style={style}

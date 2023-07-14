@@ -1,6 +1,6 @@
 import { ArrowBack } from "@mui/icons-material";
 import { ButtonBase, Dialog, IconButton } from "@mui/material";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Layout } from "../../components/Layout";
 import { Map } from "../../components/Map";
@@ -21,9 +21,10 @@ export function Walk() {
   const onBackButtonCallback = useCallback(() => {
     const yes = confirm("Do you really want to quit walking?");
     if (yes) {
+      clear();
       navigate("/challenges", { replace: true });
     }
-  }, [navigate]);
+  }, [navigate, clear]);
   useWarnOnBackButton(onBackButtonCallback);
 
   return (
