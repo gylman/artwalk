@@ -1,8 +1,5 @@
-import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import PersonIcon from "@mui/icons-material/Person";
-import BottomNavigation from "@mui/material/BottomNavigation";
-import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import { DirectionsWalk, Favorite, Person } from "@mui/icons-material";
+import { BottomNavigation, BottomNavigationAction } from "@mui/material";
 import { useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Frame } from "./Frame";
@@ -23,7 +20,7 @@ export function Layout(
   return (
     <Frame
       wrapperStyle={{
-        backgroundColor: "#E8F5FF",
+        backgroundColor: "#F6F8F4",
       }}
       {...props}
     >
@@ -51,12 +48,12 @@ export function Layout(
             );
           }}
         >
-          <BottomNavigationAction label="Profile" icon={<PersonIcon />} />
+          <BottomNavigationAction label="Profile" icon={<Person />} />
           <BottomNavigationAction
             label="Challenges"
-            icon={<DirectionsWalkIcon />}
+            icon={<DirectionsWalk />}
           />
-          <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
+          <BottomNavigationAction label="Favorites" icon={<Favorite />} />
         </BottomNavigation>
       )}
     </Frame>

@@ -24,6 +24,7 @@ interface MapContext {
   clear: () => void;
   currentStyle: PathStyle;
   setCurrentStyle: Dispatch<SetStateAction<PathStyle>>;
+  continueWalk: () => void;
 }
 
 export const MapContext = createContext<MapContext | undefined>(undefined);
@@ -36,12 +37,7 @@ export function useMapContext() {
   return value;
 }
 
-export function useWatchPosition({
-  callback,
-  onError,
-  period = 10_000,
-  isEnabled = false,
-}) {
+export function useWatchPosition({ callback, onError, period = 5_000 }) {
   const timeout = 2000;
   const fallbackTimeout = 5000;
 
@@ -53,43 +49,30 @@ export function useWatchPosition({
     });
   }, [callback, onError]);
 
-  // To prevent the interval being reset when callback and onError has changed
-  const handlersRef = useRef({
-    callback,
-    onError,
-    onErrorWithFallback,
-  });
-
   useEffect(() => {
-    handlersRef.current = { callback, onError, onErrorWithFallback };
-  }, [callback, onError, onErrorWithFallback]);
-
-  useEffect(() => {
-    if (!isEnabled) return;
-
     if (!navigator.geolocation) {
-      handlersRef.current.onError(
+      onError(
         new Error("navigator.geolocation is not supported on this browser.")
       );
       return;
     }
 
-    navigator.geolocation.getCurrentPosition(
-      handlersRef.current.callback,
-      handlersRef.current.onErrorWithFallback,
-      { enableHighAccuracy: true, maximumAge: 10000, timeout }
-    );
+    navigator.geolocation.getCurrentPosition(callback, onErrorWithFallback, {
+      enableHighAccuracy: true,
+      maximumAge: 10000,
+      timeout,
+    });
 
     const interval = setInterval(() => {
-      navigator.geolocation.getCurrentPosition(
-        handlersRef.current.callback,
-        handlersRef.current.onErrorWithFallback,
-        { enableHighAccuracy: true, maximumAge: 10000, timeout }
-      );
+      navigator.geolocation.getCurrentPosition(callback, onErrorWithFallback, {
+        enableHighAccuracy: true,
+        maximumAge: 10000,
+        timeout,
+      });
     }, period);
 
     return () => {
       clearInterval(interval);
     };
-  }, [period, isEnabled]);
+  }, [period, callback, onError, onErrorWithFallback]);
 }

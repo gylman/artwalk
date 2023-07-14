@@ -1,9 +1,9 @@
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import { Frame } from "../../components/Frame";
-import background from "./background.svg";
+import { Box, Button, Typography } from "@mui/material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Frame } from "../../components/Frame";
+import background from "./background.svg";
+import { PrimaryButton } from "../../components/PrimaryButton";
 
 export function Home() {
   // TODO: connect wallet
@@ -23,80 +23,76 @@ export function Home() {
         justifyContent: "space-between",
       }}
     >
-      <h1
-        style={{
-          fontSize: "64px",
-          lineHeight: 1.125,
-          fontWeight: 700,
-          padding: "24px",
-        }}
+      <Typography
+        variant="h1"
+        component="h1"
+        fontWeight={600}
+        fontSize="64px"
+        lineHeight="70px"
+        paddingTop="64px"
+        textAlign="center"
+        color="#C9E7AC"
+        fontFamily="Mona Sans"
       >
         Own Your Workout
-      </h1>
+      </Typography>
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           justifyContent: "start",
           alignItems: "center",
-          padding: "24px",
+          paddingBottom: "48px",
         }}
       >
-        <h2
+        <Typography
+          variant="h2"
+          component="h2"
+          fontFamily="Mona Sans"
           style={{
             width: "100%",
             fontSize: 48,
-            lineHeight: 1.25,
-            fontWeight: 700,
-            textAlign: "left",
-            color: "black",
+            lineHeight: 1,
+            fontWeight: 600,
+            textAlign: "center",
+            color: "#00301E",
             marginBottom: "16px",
           }}
         >
           Touch grass
-        </h2>
-        <p
+        </Typography>
+        <Typography
+          variant="h2"
+          component="h2"
+          fontFamily="Mona Sans"
           style={{
             width: "100%",
-            fontSize: 32,
-            lineHeight: 1.25,
-            color: "black",
-            marginBottom: "40px",
+            fontSize: 24,
+            lineHeight: "30px",
+            fontWeight: 400,
+            textAlign: "center",
+            color: "#00301E",
+            marginBottom: "56px",
           }}
         >
           Create & Mint Art<br />through Fitness
-        </p>
+        </Typography>
         {isWalletConnected
           ? (
             <Link to="/challenges">
-              <Button
-                variant="contained"
-                color="primary"
-                style={{
-                  backgroundColor: "black",
-                  fontSize: 16,
-                  borderRadius: 20,
-                }}
-              >
-                GO TO CHALLENGE
-              </Button>
+              <PrimaryButton>
+                Go to challenge
+              </PrimaryButton>
             </Link>
           )
           : (
-            <Button
-              variant="contained"
-              color="primary"
-              style={{
-                backgroundColor: "black",
-                fontSize: 16,
-                borderRadius: 20,
-              }}
+            <PrimaryButton
               onClick={() => {
                 setIsWalletConnected(true);
               }}
             >
-              CONNECT WALLET
-            </Button>
+              Connect wallet
+            </PrimaryButton>
           )}
       </Box>
     </Frame>

@@ -69,46 +69,48 @@ export function setCircle(
       },
     });
   } else {
-    map.addSource("point", {
-      type: "geojson",
-      data: {
-        type: "Feature",
-        properties: {},
-        geometry: {
-          type: "Point",
-          coordinates: coordinate,
+    try {
+      map.addSource("point", {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          properties: {},
+          geometry: {
+            type: "Point",
+            coordinates: coordinate,
+          },
         },
-      },
-    });
-    point = map.getSource("point") as GeoJSONSource;
+      });
+    } catch {}
   }
 
   let layer = map.getLayer("point-layer") as CircleLayer;
   if (layer) {
     map.removeLayer("point-layer");
   }
-  map.addLayer({
-    id: "point-layer",
-    type: "circle",
-    source: `point`,
-    paint: getCirclePaint(style),
-  });
-  layer = map.getLayer("point-layer") as CircleLayer;
-
-  return { point, layer };
+  try {
+    map.addLayer({
+      id: "point-layer",
+      type: "circle",
+      source: "point",
+      paint: getCirclePaint(style),
+    });
+  } catch {}
 }
 
 export function setPathCoordinates(
   map: mapboxgl.Map,
   index: number,
-  coordinates: Path[]
+  coordinates: Path[],
+  style: PathStyle
 ) {
   let path = map.getSource(`path-${index}`) as GeoJSONSource | undefined;
   if (!path) {
-    throw new Error(`Path ${index} not found`);
+    createPath(map, index, coordinates[0], style);
+    path = map.getSource(`path-${index}`) as GeoJSONSource | undefined;
   }
 
-  path.setData({
+  path?.setData({
     type: "Feature",
     properties: {},
     geometry: {
@@ -135,18 +137,19 @@ export function createPath(
       },
     });
   } else {
-    map.addSource(`path-${index}`, {
-      type: "geojson",
-      data: {
-        type: "Feature",
-        properties: {},
-        geometry: {
-          type: "MultiLineString",
-          coordinates: [coordinates],
+    try {
+      map.addSource(`path-${index}`, {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          properties: {},
+          geometry: {
+            type: "MultiLineString",
+            coordinates: [coordinates],
+          },
         },
-      },
-    });
-    path = map.getSource(`path-${index}`) as GeoJSONSource;
+      });
+    } catch {}
   }
 
   let layer = map.getLayer(`path-layer-${index}`) as LineLayer;
@@ -156,20 +159,19 @@ export function createPath(
       map.setPaintProperty(layer.id, key, paint[key]);
     }
   } else {
-    map.addLayer({
-      id: `path-layer-${index}`,
-      type: "line",
-      source: `path-${index}`,
-      layout: {
-        "line-join": "round",
-        "line-cap": "round",
-      },
-      paint: getPathPaint(style),
-    });
-    layer = map.getLayer(`path-layer-${index}`) as LineLayer;
+    try {
+      map.addLayer({
+        id: `path-layer-${index}`,
+        type: "line",
+        source: `path-${index}`,
+        layout: {
+          "line-join": "round",
+          "line-cap": "round",
+        },
+        paint: getPathPaint(style),
+      });
+    } catch {}
   }
-
-  return { path, layer };
 }
 
 export function clearSources(map: mapboxgl.Map, from = 0) {
@@ -179,11 +181,11 @@ export function clearSources(map: mapboxgl.Map, from = 0) {
     let layer = map.getLayer(`path-layer-${index}`);
 
     if (!path && !layer) return;
-    if (path) {
-      map.removeSource(`path-${index}`);
-    }
     if (layer) {
       map.removeLayer(`path-layer-${index}`);
+    }
+    if (path) {
+      map.removeSource(`path-${index}`);
     }
   }
 }

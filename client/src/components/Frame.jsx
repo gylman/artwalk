@@ -14,8 +14,6 @@ export function Frame({ children, wrapperStyle, ...props }) {
         {...props}
         style={{
           height: "100%",
-          // width: "min(100vw, 66.7vh)",
-          // margin: "0 auto",
           ...props.style,
         }}
       >
