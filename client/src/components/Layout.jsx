@@ -1,11 +1,11 @@
+import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import PersonIcon from "@mui/icons-material/Person";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import PersonIcon from "@mui/icons-material/Person";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
-import { Frame } from "./Frame";
-import { useLocation, useNavigate } from "react-router-dom";
 import { useMemo } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Frame } from "./Frame";
 
 function getTabIndexFromLocation({ pathname }) {
   if (pathname.startsWith("/profiles")) return 0;
