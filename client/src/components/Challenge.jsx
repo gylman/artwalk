@@ -1,18 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
-import participants from '../assets/images/participants.svg';
-
-const Card = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  position: relative;
-  border-radius: 4px;
-  background: #00301e;
-  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.12),
-    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.2);
-`;
+import { Button } from "@mui/material";
+import styled from "styled-components";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardMedia from "@mui/material/CardMedia";
+import participants from "../assets/images/participants.svg";
 
 const Tag = styled.div`
   position: absolute;
@@ -40,7 +31,7 @@ const Content = styled.div`
   background: #00301e;
   flex-direction: column;
   gap: 7.42px;
-  padding: 21px 16px;
+  padding: 16px 16px 0;
 `;
 
 const Row = styled.div`
@@ -75,36 +66,20 @@ const Title = styled.span`
   line-height: 32.016px;
 `;
 
-const ImgWrapper = styled.div`
-  width: 100%;
-`;
-
-const Button = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
-  color: #c9e7ac;
-  font-family: Roboto;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 138.462%;
-  letter-spacing: 0.16px;
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
 const ParticipantsIcon = styled.img.attrs({ src: participants })``;
 
 export const Challenge = (props) => {
+  console.log(props);
   return (
-    <Card>
+    <Card
+      sx={{ width: "100%", backgroundColor: "#00301e", position: "relative" }}
+    >
       <Tag>{props.pricing}</Tag>
-      <ImgWrapper>
-        <img src={props.imgUrl} widht='100%' />
-      </ImgWrapper>
+      <CardMedia
+        component="img"
+        sx={{ height: 220, backgroundColor: "white", objectFit: "contain" }}
+        image={props.imgUrl}
+      />
       <Content>
         <Row>
           <Title>{props.title}</Title>
@@ -119,12 +94,17 @@ export const Challenge = (props) => {
         </Row>
         <Row>
           <Text>Deadline</Text>
-          <Text>{props.deadline}</Text>
-        </Row>
-        <Row>
-          <Button>START WALKING</Button>
+          <Text>{props.deadline.toLocaleString("en-US")}</Text>
         </Row>
       </Content>
+
+      <CardActions>
+        <Button
+          sx={{ color: "#c9e7ac" }}
+        >
+          START WALKING
+        </Button>
+      </CardActions>
     </Card>
   );
 };
