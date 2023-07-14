@@ -38,7 +38,7 @@ import {
 mapboxgl.accessToken = env.VITE_MAPBOX_API_KEY;
 
 const DEFAULT_STYLE = {
-  lineWidth: 100,
+  lineWidth: 4,
   color: { r: 249, g: 115, b: 22 },
 };
 
@@ -456,13 +456,13 @@ function StyleDialog({
             aria-label="line width"
             value={styleBuffer.lineWidth}
             valueLabelDisplay="auto"
-            step={10}
+            step={1}
             marks={[
-              { value: 50, label: "50m" },
-              { value: 500, label: "500m" },
+              { value: 1, label: "1" },
+              { value: 20, label: "20" },
             ]}
-            min={50}
-            max={500}
+            min={1}
+            max={20}
             onChange={(_, lineWidth) => {
               setStyleBuffer((s) => ({
                 ...s,
