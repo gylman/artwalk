@@ -4,45 +4,21 @@ import type { Path, PathStyle } from "../../state";
 
 export const DEFAULT_LONGITUDE = 126.986;
 export const DEFAULT_LATITUDE = 37.541;
-export const DEFAULT_ZOOM = 13;
-
-function getLineWidthStops(lineWidth: number) {
-  return [
-    // [zoomLevel, lineWidth][]
-    [0, 0.1 * lineWidth * Math.pow(2, 0 - DEFAULT_ZOOM)],
-    [24, 0.1 * lineWidth * Math.pow(2, 24 - DEFAULT_ZOOM)],
-  ];
-}
-
-function getCircleRadiusStops(lineWidth: number) {
-  return getLineWidthStops(lineWidth * 0.5);
-}
+export const DEFAULT_ZOOM = 20;
 
 export function getPathPaint(style: PathStyle) {
   return {
     "line-color": rgbToHex(style.color),
-    "line-width": {
-      type: "exponential" as "exponential",
-      base: 2,
-      stops: getLineWidthStops(style.lineWidth),
-    },
+    "line-width": style.lineWidth,
   };
 }
 
 export function getCirclePaint(style: PathStyle) {
   return {
-    "circle-radius": getCircleRadius(style.lineWidth),
+    "circle-radius": style.lineWidth / 2,
     "circle-color": rgbToHex(style.color),
     "circle-stroke-color": "#ffffff",
     "circle-stroke-width": 2,
-  };
-}
-
-export function getCircleRadius(lineWidth: number) {
-  return {
-    type: "exponential" as "exponential",
-    base: 2,
-    stops: getCircleRadiusStops(lineWidth),
   };
 }
 
