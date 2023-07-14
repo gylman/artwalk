@@ -6,7 +6,7 @@ export function TopBar({
   before,
   after,
 }: {
-  sx: SxProps;
+  sx?: SxProps;
   title: string;
   before?: JSX.Element;
   after?: JSX.Element;

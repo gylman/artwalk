@@ -37,14 +37,14 @@ export function useMapContext() {
   return value;
 }
 
-export function useWatchPosition({ callback, onError, period = 5_000 }) {
+export function useWatchPosition({ callback, onError, period = 4_000 }) {
   const timeout = 2000;
   const fallbackTimeout = 5000;
 
   const onErrorWithFallback = useCallback(() => {
     navigator.geolocation.getCurrentPosition(callback, onError, {
-      enableHighAccuracy: true,
-      maximumAge: 10000,
+      enableHighAccuracy: false,
+      maximumAge: 0,
       timeout: fallbackTimeout,
     });
   }, [callback, onError]);
@@ -59,14 +59,14 @@ export function useWatchPosition({ callback, onError, period = 5_000 }) {
 
     navigator.geolocation.getCurrentPosition(callback, onErrorWithFallback, {
       enableHighAccuracy: true,
-      maximumAge: 10000,
+      maximumAge: 0,
       timeout,
     });
 
     const interval = setInterval(() => {
       navigator.geolocation.getCurrentPosition(callback, onErrorWithFallback, {
         enableHighAccuracy: true,
-        maximumAge: 10000,
+        maximumAge: 0,
         timeout,
       });
     }, period);
