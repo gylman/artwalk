@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogTitle,
   Fab,
+  Portal,
   Slider,
   Typography,
 } from "@mui/material";
@@ -56,8 +57,12 @@ export function MapProvider({ children }) {
   );
 
   const clear = useCallback(() => {
+    console.log("clearing");
     setStyledPathGroups(() => {
       if (map.current) clearSources(map.current);
+      else {
+        console.log("failed to clear sources");
+      }
       return [];
     });
   }, [setStyledPathGroups]);
@@ -103,6 +108,9 @@ export function MapProvider({ children }) {
 }
 
 export function Map() {
+  const [lastError, setLastError] = useState("");
+  const [lastAccuracy, setLastAccuracy] = useState(-1);
+
   const [isFollowing, setIsFollowing] = useState(true);
   const isFollowingRef = useRef(false);
   useEffect(() => {
@@ -125,6 +133,17 @@ export function Map() {
   } = useMapContext();
 
   const [locationInitialized, setLocationInitialized] = useState(false);
+
+  // draw all when first loaded
+  useEffect(() => {
+    if (isEnabled && isLoaded) {
+      styledPathGroups.forEach((group, index) => {
+        if (map.current) {
+          setPathCoordinates(map.current, index, group.paths, group.style);
+        }
+      });
+    }
+  }, [isEnabled, isLoaded]);
 
   const addPoint = useCallback(
     (coordinate: [lng: number, lat: number]) => {
@@ -188,8 +207,10 @@ export function Map() {
 
   const watchPositionCallback = useCallback(
     ({ coords }) => {
-      const lng = coords.longitude;
-      const lat = coords.latitude;
+      const lng = coords.longitude + Math.random() * 0.0003;
+      const lat = coords.latitude + Math.random() * 0.0003;
+      setLastAccuracy(coords.accuracy);
+      setLastError("");
 
       if (map.current) {
         setCircle(map.current, [lng, lat], currentStyle);
@@ -215,7 +236,10 @@ export function Map() {
   const watchPositionOnError = useCallback(
     (e: Error) => {
       console.error(e.message);
-      setIsEnabled(false);
+      setLastError(e.message);
+      if (!e.message.includes("timed")) {
+        setIsEnabled(false);
+      }
     },
     [setIsEnabled]
   );
@@ -389,6 +413,45 @@ export function Map() {
             }}
           />
         </div>
+      )}
+
+      {lastAccuracy >= 0 && (
+        <Portal>
+          <div
+            style={{
+              position: "fixed",
+              top: 48,
+              right: 0,
+              backgroundColor: "#12f2",
+              color: "black",
+              zIndex: 9999,
+              padding: 16,
+            }}
+          >
+            <Typography variant="h6" fontFamily="Mona Sans">
+              Accuracy: {lastAccuracy} m
+            </Typography>
+          </div>
+        </Portal>
+      )}
+      {lastError && (
+        <Portal>
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              right: 0,
+              backgroundColor: "#f122",
+              color: "black",
+              zIndex: 9999,
+              padding: 16,
+            }}
+          >
+            <Typography variant="h6" fontFamily="Mona Sans">
+              {lastError}
+            </Typography>
+          </div>
+        </Portal>
       )}
     </div>
   );

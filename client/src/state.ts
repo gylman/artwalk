@@ -13,5 +13,5 @@ export interface StyledPathGroup {
 
 export const styledPathGroupsAtom = atomWithStorage<StyledPathGroup[]>(
   "styledPathGroups",
-  []
+  JSON.parse(localStorage.getItem("styledPathGroups") ?? "[]")
 );
