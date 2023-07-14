@@ -207,8 +207,8 @@ export function Map() {
 
   const watchPositionCallback = useCallback(
     ({ coords }) => {
-      const lng = coords.longitude + Math.random() * 0.0003;
-      const lat = coords.latitude + Math.random() * 0.0003;
+      const lng = coords.longitude;
+      const lat = coords.latitude;
       setLastAccuracy(coords.accuracy);
       setLastError("");
 
