@@ -1,9 +1,14 @@
-import Button from "@mui/material/Button";
-import { Link, useParams } from "react-router-dom";
+import { Button, IconButton, Typography } from "@mui/material";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Layout } from "../../components/Layout";
+import { ArrowBack } from "@mui/icons-material";
+import { TopBar } from "../../components/TopBar";
+import { HiFive } from "../../components/HiFive";
+import { PrimaryButton } from "../../components/PrimaryButton";
 
 export function Finish() {
   const { slug } = useParams();
+  const navigate = useNavigate();
 
   return (
     <Layout
@@ -13,53 +18,77 @@ export function Finish() {
         flexDirection: "column",
       }}
     >
+      <TopBar
+        before={
+          <IconButton
+            aria-label="back"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowBack />
+          </IconButton>
+        }
+        title="Walking Finished"
+      />
+
       <div
         style={{
           position: "relative",
           width: "100%",
           height: "100%",
-          padding: "24px",
+          paddingBottom: "48px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
+          alignItems: "center",
           gap: "32px",
         }}
       >
-        <div>
-          <h1
-            style={{
-              fontSize: "32px",
-              fontWeight: 700,
-            }}
+        <div
+          style={{
+            backgroundColor: "#C9E7AC",
+            color: "#00301E",
+            width: "144px",
+            height: "144px",
+            borderRadius: "50%",
+            display: "grid",
+            placeItems: "center",
+          }}
+        >
+          <HiFive />
+        </div>
+
+        <div style={{ textAlign: "center", padding: "0 24px" }}>
+          <Typography
+            variant="h4"
+            fontFamily="Mona Sans"
+            sx={{ marginBottom: "8px" }}
           >
-            Wohhooooo! 🥳
-          </h1>
-          <p>You finished the walking artwork!</p>
+            Hi-5!
+          </Typography>
+          <Typography variant="h5" fontFamily="Mona Sans">
+            Here’s the result of your walking artwork.
+          </Typography>
         </div>
 
         <div
           style={{
+            width: "100%",
             flex: "1 1 0%",
-            textAlign: "center",
-            backgroundColor: "#00000011",
-            borderRadius: "8px",
+            padding: "0 24px",
           }}
         >
           Canvas here
         </div>
 
         <Link to={`/challenges/${slug}/similarity`}>
-          <Button
-            variant="contained"
+          <PrimaryButton
             style={{
-              width: "100%",
-              flexShrink: 0,
               borderRadius: "20px",
               fontSize: "16px",
             }}
           >
             Check Similarity
-          </Button>
+          </PrimaryButton>
         </Link>
       </div>
     </Layout>

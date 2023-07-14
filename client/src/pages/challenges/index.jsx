@@ -1,10 +1,12 @@
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import { Layout } from "../../components/Layout";
+import { FilterList } from "@mui/icons-material";
+import { Button, Tab, Tabs } from "@mui/material";
+import dayjs from "dayjs";
 import { useRef, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
 import { Link } from "react-router-dom";
 import "swiper/css";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Layout } from "../../components/Layout";
+import { FilterChallengeDialog } from "./FilterChallengeDialog";
 
 function a11yProps(index) {
   return {
@@ -14,11 +16,20 @@ function a11yProps(index) {
 }
 
 export function Challenges() {
-  const [value, setValue] = useState(0);
+  const [values, setValues] = useState({
+    theme: "Endangered animals",
+    placesToWalk: "Nature",
+    deadline: dayjs(),
+  });
+
+  const [tabIndex, setTabIndex] = useState(0);
   const swiperRef = useRef(null);
 
+  const [isFilterChallengeDialogOpen, setIsFilterChallengeDialogOpen] =
+    useState(false);
+
   const handleChange = (newValue) => {
-    setValue(newValue);
+    setTabIndex(newValue);
     swiperRef.current?.slideTo(newValue);
   };
   const onSwiper = (currentSwiper) => {
@@ -26,7 +37,7 @@ export function Challenges() {
     swiperRef.current = swiperInstance;
   };
   const onSlideChange = (currentSwiper) => {
-    setValue(currentSwiper.activeIndex);
+    setTabIndex(currentSwiper.activeIndex);
   };
 
   return (
@@ -37,7 +48,7 @@ export function Challenges() {
       }}
     >
       <Tabs
-        value={value}
+        value={tabIndex}
         onChange={(_, v) => handleChange(v)}
         indicatorColor="primary"
         textColor="inherit"
@@ -62,9 +73,34 @@ export function Challenges() {
           flex: "1 1 0%",
         }}
       >
+        {/* Challenge page */}
         <SwiperSlide>
-          <TabPanel value={value} index={0}>
-            <Link to="/challenges/dummy/walk">
+          <TabPanel value={tabIndex} index={0}>
+            <Button
+              variant="outlined"
+              startIcon={<FilterList />}
+              style={{ borderRadius: 9999, marginBottom: "8px" }}
+              onClick={() => setIsFilterChallengeDialogOpen(true)}
+            >
+              Filter challenge
+            </Button>
+            <Button
+              style={{
+                borderRadius: 9999,
+                color: "#757575",
+                padding: "5px 15px",
+                marginBottom: "16px",
+              }}
+            >
+              Suggest a new challenge
+            </Button>
+
+            <Link
+              to="/challenges/dummy/walk"
+              style={{
+                display: "contents",
+              }}
+            >
               <button
                 style={{
                   width: "100%",
@@ -78,11 +114,39 @@ export function Challenges() {
             </Link>
           </TabPanel>
         </SwiperSlide>
+
+        {/* */}
         <SwiperSlide>
-          <TabPanel value={value} index={1}>
+          <TabPanel value={tabIndex} index={1}>
           </TabPanel>
         </SwiperSlide>
       </Swiper>
+
+      <FilterChallengeDialog
+        isOpen={isFilterChallengeDialogOpen}
+        setIsOpen={setIsFilterChallengeDialogOpen}
+        spec={[
+          {
+            type: "select",
+            id: "theme",
+            label: "Theme",
+            options: ["Endangered animals", "Modern arts"],
+          },
+          {
+            type: "select",
+            id: "placesToWalk",
+            label: "Where to you want to walk",
+            options: ["Nature", "City"],
+          },
+          {
+            type: "datetime",
+            id: "deadline",
+            label: "Deadline",
+          },
+        ]}
+        values={values}
+        setValues={setValues}
+      />
     </Layout>
   );
 }
@@ -105,6 +169,9 @@ function TabPanel(props) {
           style={{
             overflowY: "auto",
             height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
           {children}

@@ -1,10 +1,9 @@
-import Button from "@mui/material/Button";
-import { useNavigate, useParams } from "react-router-dom";
-import { Layout } from "../../components/Layout";
+import { Button, LinearProgress } from "@mui/material";
 import { useEffect, useState } from "react";
-import LinearProgress from "@mui/material/LinearProgress";
-import useWindowSize from "react-use/lib/useWindowSize";
 import Confetti from "react-confetti";
+import { useNavigate, useParams } from "react-router-dom";
+import useWindowSize from "react-use/lib/useWindowSize";
+import { Layout } from "../../components/Layout";
 import { useWarnOnBackButton } from "../../hooks/useWarnOnBackButton";
 
 export function Similarity() {

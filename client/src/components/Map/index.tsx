@@ -1,14 +1,15 @@
-import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
-import MyLocationIcon from "@mui/icons-material/MyLocation";
-import PaletteIcon from "@mui/icons-material/Palette";
-import Button from "@mui/material/Button";
-import CircularProgress from "@mui/material/CircularProgress";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Fab from "@mui/material/Fab";
-import Slider from "@mui/material/Slider";
+import { LocationSearching, MyLocation, Palette } from "@mui/icons-material";
+import {
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Fab,
+  Slider,
+  Typography,
+} from "@mui/material";
 import { useAtom } from "jotai";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -41,8 +42,6 @@ const DEFAULT_STYLE = {
   color: { r: 249, g: 115, b: 22 },
 };
 
-const PATH_SEPARATION_THRESHOLD = 0.003;
-
 export function MapProvider({ children }) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | undefined>(undefined);
@@ -51,7 +50,9 @@ export function MapProvider({ children }) {
   const [isEnabled, setIsEnabled] = useState(true);
   const [styledPathGroups, setStyledPathGroups] = useAtom(styledPathGroupsAtom);
   const [currentStyle, setCurrentStyle] = useState(
-    styledPathGroups.at(-1)?.style ?? DEFAULT_STYLE
+    // XXX: for some unknown reason `styledPathGroups` is not initialized by the value from localStorage
+    JSON.parse(localStorage.getItem("styledPathGroups") ?? "[]").at(-1)
+      ?.style ?? DEFAULT_STYLE
   );
 
   const clear = useCallback(() => {
@@ -62,15 +63,22 @@ export function MapProvider({ children }) {
   }, [setStyledPathGroups]);
 
   useEffect(() => {
-    clear();
-  }, [clear]);
-
-  useEffect(() => {
     if (!isLoaded) return;
     if (!map.current) return;
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded]);
+
+  const continueWalk = useCallback(() => {
+    setStyledPathGroups((p) => [
+      ...p,
+      {
+        style: currentStyle,
+        paths: [[]],
+      },
+    ]);
+    setIsEnabled(true);
+  }, [currentStyle]);
 
   return (
     <MapContext.Provider
@@ -86,6 +94,7 @@ export function MapProvider({ children }) {
         clear,
         currentStyle,
         setCurrentStyle,
+        continueWalk,
       }}
     >
       {children}
@@ -100,7 +109,7 @@ export function Map() {
     isFollowingRef.current = isFollowing;
   }, [isFollowing]);
 
-  const [isStyleModalOpen, setIsStyleModalOpen] = useState(false);
+  const [isStyleDialogOpen, setIsStyleDialogOpen] = useState(false);
 
   const {
     map,
@@ -136,8 +145,6 @@ export function Map() {
         const lastStyle = lastGroup.style;
         const sameStyle = isStyleSame(lastStyle, currentStyle);
 
-        setCircle(map.current, coordinate, currentStyle);
-
         if (sameStyle) {
           // append the coordinate to the last path
           const newLastGroupPaths = [
@@ -147,7 +154,8 @@ export function Map() {
           setPathCoordinates(
             map.current,
             styledPathGroups.length - 1,
-            newLastGroupPaths
+            newLastGroupPaths,
+            lastStyle
           );
 
           return [
@@ -183,7 +191,14 @@ export function Map() {
       const lng = coords.longitude;
       const lat = coords.latitude;
 
-      addPoint([lng, lat]);
+      if (map.current) {
+        setCircle(map.current, [lng, lat], currentStyle);
+      }
+
+      if (isEnabled) {
+        addPoint([lng, lat]);
+      }
+
       setLocationInitialized((locationInitialized) => {
         if (isFollowingRef.current && locationInitialized) {
           map.current?.easeTo({ center: [lng, lat] });
@@ -194,7 +209,7 @@ export function Map() {
         return true;
       });
     },
-    [addPoint, map, currentStyle, setLocationInitialized]
+    [addPoint, map, currentStyle, setLocationInitialized, isEnabled]
   );
 
   const watchPositionOnError = useCallback(
@@ -206,7 +221,6 @@ export function Map() {
   );
 
   useWatchPosition({
-    isEnabled: isLoaded && isEnabled,
     callback: watchPositionCallback,
     onError: watchPositionOnError,
   });
@@ -283,24 +297,30 @@ export function Map() {
           display: "flex",
           flexDirection: "column",
           gap: "24px",
-          position: "fixed",
-          bottom: 88,
+          position: "absolute",
+          bottom: 24,
           right: 24,
+          zIndex: 10,
         }}
       >
         {/* style customization */}
         <Fab
           size="medium"
-          style={{
-            backgroundColor: "white",
+          sx={{
+            color: "#00301E",
+            backgroundColor: "#F6F8F4",
+            borderRadius: "30%",
+            ":hover": {
+              backgroundColor: "rgb(226,230,220)",
+            },
           }}
           color="secondary"
           aria-label="my-location"
           onClick={() => {
-            setIsStyleModalOpen(true);
+            setIsStyleDialogOpen(true);
           }}
         >
-          <PaletteIcon />
+          <Palette />
           <div
             style={{
               width: 8,
@@ -310,9 +330,9 @@ export function Map() {
             }}
           />
         </Fab>
-        <StyleModal
-          isStyleModalOpen={isStyleModalOpen}
-          setIsStyleModalOpen={setIsStyleModalOpen}
+        <StyleDialog
+          isStyleDialogOpen={isStyleDialogOpen}
+          setIsStyleDialogOpen={setIsStyleDialogOpen}
           currentStyle={currentStyle}
           setCurrentStyle={setCurrentStyle}
         />
@@ -320,8 +340,13 @@ export function Map() {
         {/* following location */}
         <Fab
           size="medium"
-          style={{
-            backgroundColor: "white",
+          sx={{
+            color: "#00301E",
+            backgroundColor: "#F6F8F4",
+            borderRadius: "30%",
+            ":hover": {
+              backgroundColor: "rgb(226,230,220)",
+            },
           }}
           color="secondary"
           aria-label="my-location"
@@ -340,7 +365,7 @@ export function Map() {
             }
           }}
         >
-          {isFollowing ? <MyLocationIcon /> : <LocationSearchingIcon />}
+          {isFollowing ? <MyLocation /> : <LocationSearching />}
         </Fab>
       </section>
 
@@ -369,32 +394,45 @@ export function Map() {
   );
 }
 
-function StyleModal({
-  isStyleModalOpen,
-  setIsStyleModalOpen,
+function StyleDialog({
+  isStyleDialogOpen,
+  setIsStyleDialogOpen,
   currentStyle,
   setCurrentStyle,
 }) {
   const [styleBuffer, setStyleBuffer] = useState<PathStyle>(currentStyle);
 
   useEffect(() => {
-    setStyleBuffer(currentStyle);
-  }, [currentStyle]);
+    if (isStyleDialogOpen) {
+      setStyleBuffer(currentStyle);
+    }
+  }, [currentStyle, isStyleDialogOpen]);
 
   return (
     <Dialog
-      onClose={() => setIsStyleModalOpen(false)}
-      open={isStyleModalOpen}
+      onClose={() => setIsStyleDialogOpen(false)}
+      open={isStyleDialogOpen}
       PaperProps={{
         style: {
           overflow: "hidden",
+          backgroundColor: "#F6F8F4",
+          padding: "24px",
+          borderRadius: "24px",
         },
       }}
     >
-      <DialogTitle>Change path style</DialogTitle>
+      <DialogTitle variant="h5" fontFamily="'Mona Sans'" sx={{ padding: 0 }}>
+        Change path style
+      </DialogTitle>
 
-      <DialogContent style={{ overflowY: "visible" }}>
-        <h2 style={{ fontSize: 16, marginBottom: 16 }}>Color</h2>
+      <DialogContent sx={{ overflowY: "visible", paddingX: 0 }}>
+        <Typography
+          variant="h6"
+          fontFamily="'Mona Sans'"
+          sx={{ paddingTop: "16px", paddingBottom: "12px" }}
+        >
+          Color
+        </Typography>
         <RgbColorPicker
           color={styleBuffer.color}
           onChange={(color) => {
@@ -406,13 +444,19 @@ function StyleModal({
           }}
         />
 
-        <h2 style={{ fontSize: 16, margin: "16px 0 8px" }}>Line Width</h2>
+        <Typography
+          variant="h6"
+          fontFamily="'Mona Sans'"
+          sx={{ paddingTop: "16px", paddingBottom: "12px" }}
+        >
+          Line Width
+        </Typography>
         <div style={{ padding: "0 16px" }}>
           <Slider
             aria-label="line width"
             value={styleBuffer.lineWidth}
             valueLabelDisplay="auto"
-            step={50}
+            step={10}
             marks={[
               { value: 50, label: "50m" },
               { value: 500, label: "500m" },
@@ -429,12 +473,12 @@ function StyleModal({
         </div>
       </DialogContent>
 
-      <DialogActions>
+      <DialogActions sx={{ padding: 0 }}>
         <Button
           autoFocus
           onClick={() => {
             setCurrentStyle(styleBuffer);
-            setIsStyleModalOpen(false);
+            setIsStyleDialogOpen(false);
           }}
         >
           Save changes

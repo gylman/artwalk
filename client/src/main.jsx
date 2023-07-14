@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material";
-import { blue, grey } from "@mui/material/colors";
+import { grey, red } from "@mui/material/colors";
 import "./main.css";
 
 import { Home } from "./pages/home";
@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     element: <Challenges />,
   },
   {
-    path: "/challenges/:slug/walk",
+    path: "/challenges/:slug/:page",
     element: <Walk />,
   },
   {
@@ -50,13 +50,21 @@ const router = createBrowserRouter([
 ]);
 
 const theme = createTheme({
-  typography: {
-    fontFamily:
-      `Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`,
-  },
   palette: {
-    primary: blue,
+    primary: {
+      50: "#00301E",
+      100: "#00301E",
+      200: "#00301E",
+      300: "#00301E",
+      400: "#00301E",
+      500: "#00301E",
+      600: "#00301E",
+      700: "#00301E",
+      800: "#00301E",
+      900: "#00301E",
+    },
     secondary: grey,
+    warning: red,
   },
 });
 
