@@ -1,10 +1,12 @@
-import { Button, LinearProgress } from "@mui/material";
+import { Button, LinearProgress, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import Confetti from "react-confetti";
 import { useNavigate, useParams } from "react-router-dom";
-import useWindowSize from "react-use/lib/useWindowSize";
 import { Layout } from "../../components/Layout";
 import { useWarnOnBackButton } from "../../hooks/useWarnOnBackButton";
+import { TopBar } from "../../components/TopBar";
+import { Geojson } from "../../components/Geojson";
+import { useMapContext } from "../../components/Map/hooks";
+import { PrimaryButton } from "../../components/PrimaryButton";
 
 export function Similarity() {
   useWarnOnBackButton();
@@ -13,7 +15,7 @@ export function Similarity() {
   const navigate = useNavigate();
 
   const [isSimilarityComputed, setIsSimilarityComputed] = useState(false);
-  const { width, height } = useWindowSize();
+  const { styledPathGroups } = useMapContext();
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -31,6 +33,8 @@ export function Similarity() {
         flexDirection: "column",
       }}
     >
+      {/* Back button */}
+      <TopBar title={isSimilarityComputed ? "Your Result" : "Hold on walker"} />
       <div
         style={{
           position: "relative",
@@ -39,93 +43,105 @@ export function Similarity() {
           padding: "24px",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "space-between",
+          alignItems: "center",
           gap: "32px",
         }}
       >
         {isSimilarityComputed
           ? (
-            <section>
-              <p>
-                You have
-              </p>
-              <p
+            <>
+              <div
                 style={{
-                  textAlign: "center",
-                  fontSize: "48px",
-                  fontWeight: 700,
+                  backgroundColor: "#9afcc5",
+                  color: "#7135C7",
+                  width: "144px",
+                  height: "144px",
+                  borderRadius: "50%",
+                  display: "grid",
+                  placeItems: "center",
                 }}
               >
-                89%
-              </p>
-              <p>
-                of similarity with the original artwork. Amazing!
-              </p>
-              <Confetti
-                recycle={false}
-                width={width}
-                height={height}
-                numberOfPieces={300}
-              />
-            </section>
+                <div>
+                  <Typography
+                    variant="h3"
+                    component="span"
+                    fontFamily="Mona Sans"
+                  >
+                    89
+                  </Typography>
+                  <Typography
+                    variant="h4"
+                    component="span"
+                    fontFamily="Mona Sans"
+                  >
+                    %
+                  </Typography>
+                </div>
+              </div>
+              <div style={{ textAlign: "center", padding: "0 24px" }}>
+                <Typography
+                  variant="h4"
+                  fontFamily="Mona Sans"
+                  sx={{ marginBottom: "8px" }}
+                >
+                  Similarity
+                </Typography>
+                <Typography variant="h5" fontFamily="Mona Sans">
+                  with the original artwork. Amazing!
+                </Typography>
+              </div>
+            </>
           )
           : (
             <>
-              <div>
-                <h1
-                  style={{
-                    fontSize: "32px",
-                    fontWeight: 700,
-                  }}
-                >
-                  Hold on tight, walker!
-                </h1>
-                <p>
-                  Our AI companion is analysing the similarity.
-                </p>
-              </div>
-              <LinearProgress />
+              <Typography
+                variant="h4"
+                fontFamily="Mona Sans"
+              >
+                AI in Progress
+              </Typography>
+
+              <LinearProgress
+                sx={{
+                  width: "100%",
+                }}
+              />
+
+              <Typography
+                variant="h5"
+                fontFamily="Mona Sans"
+                sx={{ textAlign: "center" }}
+              >
+                Our AI companion is analysing the similarity
+              </Typography>
             </>
           )}
 
-        {
-          /* <div
-          style={{
-            fontSize: "48px",
-            fontWeight: 700,
-            textAlign: "center",
-          }}
-        >
-        </div> */
-        }
-
         <div
           style={{
+            width: "80%",
             flex: "1 1 0%",
-            textAlign: "center",
-            backgroundColor: "#00000011",
-            borderRadius: "8px",
+            padding: "0 24px",
+            maxHeight: "320px",
           }}
         >
-          Canvas here
+          <Geojson styledPathGroups={styledPathGroups} />
         </div>
 
         {isSimilarityComputed &&
           (
-            <Button
+            <PrimaryButton
               onClick={() => {
                 alert("Not implemented, return to the challenge page.");
                 navigate("/challenges");
               }}
               variant="contained"
-              style={{
-                flexShrink: 0,
-                borderRadius: "20px",
+              sx={{
                 fontSize: "16px",
               }}
             >
               Submit
-            </Button>
+            </PrimaryButton>
           )}
       </div>
     </Layout>

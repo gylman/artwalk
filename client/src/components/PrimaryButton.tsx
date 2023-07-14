@@ -18,7 +18,7 @@ export function PrimaryButton({
         height: 48,
         fontSize: 14,
         borderRadius: 9999,
-        color: "#C9E7AC",
+        color: "#9afcc5",
         letterSpacing: "1px",
         ...sx,
       }}

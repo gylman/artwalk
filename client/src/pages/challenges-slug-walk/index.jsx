@@ -54,8 +54,8 @@ export function Walk() {
             sx={{
               width: 96,
               height: 72,
-              color: "#00301E",
-              backgroundColor: "#F6F8F4",
+              color: "#7135C7",
+              backgroundColor: "#F6F4F8",
               borderRadius: "16px",
               padding: "12px",
               position: "absolute",
@@ -147,14 +147,14 @@ export function Walk() {
         open={isImageDisplayOpen}
         PaperProps={{
           style: {
-            backgroundColor: "#F6F8F4",
+            backgroundColor: "#F6F4F8",
             padding: "24px",
             borderRadius: "24px",
             width: "100%",
           },
         }}
       >
-        <Turtle style={{ width: "100%", height: "100%", color: "#00301E" }} />
+        <Turtle style={{ width: "100%", height: "100%", color: "#7135C7" }} />
       </Dialog>
     </Layout>
   );

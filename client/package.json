@@ -31,7 +31,6 @@
     "react-use": "^17.4.0",
     "sort-by": "^1.2.0",
     "styled-components": "^6.0.4",
-    "swiper": "^10.0.4",
     "zod": "^3.21.4"
   },
   "devDependencies": {

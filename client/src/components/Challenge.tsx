@@ -1,9 +1,9 @@
 import { Button } from "@mui/material";
 import styled from "styled-components";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardMedia from "@mui/material/CardMedia";
-import participants from "../assets/images/participants.svg";
+import { Card, CardActions, CardMedia } from "@mui/material";
+import { Link } from "react-router-dom";
+import { PeopleOutline } from "@mui/icons-material";
+import type { ChallengeSpec } from "../constants";
 
 const Tag = styled.div`
   position: absolute;
@@ -15,8 +15,8 @@ const Tag = styled.div`
   padding: 4px 9px;
   align-items: center;
   border-radius: 100px;
-  background: #00301e;
-  color: #c9e7ac;
+  background: #7135c7;
+  color: #9afcc5;
   font-family: Roboto;
   font-size: 13px;
   font-style: normal;
@@ -28,7 +28,7 @@ const Tag = styled.div`
 const Content = styled.div`
   display: flex;
   width: 100%;
-  background: #00301e;
+  background: #7135c7;
   flex-direction: column;
   gap: 7.42px;
   padding: 16px 16px 0;
@@ -66,13 +66,10 @@ const Title = styled.span`
   line-height: 32.016px;
 `;
 
-const ParticipantsIcon = styled.img.attrs({ src: participants })``;
-
-export const Challenge = (props) => {
-  console.log(props);
+export const Challenge = (props: ChallengeSpec) => {
   return (
     <Card
-      sx={{ width: "100%", backgroundColor: "#00301e", position: "relative" }}
+      sx={{ width: "100%", backgroundColor: "#7135C7", position: "relative" }}
     >
       <Tag>{props.pricing}</Tag>
       <CardMedia
@@ -84,7 +81,7 @@ export const Challenge = (props) => {
         <Row>
           <Title>{props.title}</Title>
           <Wrapper>
-            <ParticipantsIcon />
+            <PeopleOutline sx={{ color: "rgba(255, 255, 255, 0.7)" }} />
             <Text>{props.numOfParticipants}</Text>
           </Wrapper>
         </Row>
@@ -99,11 +96,9 @@ export const Challenge = (props) => {
       </Content>
 
       <CardActions>
-        <Button
-          sx={{ color: "#c9e7ac" }}
-        >
-          START WALKING
-        </Button>
+        <Link to={`/challenges/${props.id}/walk`}>
+          <Button sx={{ color: "#9afcc5" }}>START WALKING</Button>
+        </Link>
       </CardActions>
     </Card>
   );

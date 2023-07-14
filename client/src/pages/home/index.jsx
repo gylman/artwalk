@@ -31,7 +31,7 @@ export function Home() {
         lineHeight="70px"
         paddingTop="64px"
         textAlign="center"
-        color="#C9E7AC"
+        color="#9afcc5"
         fontFamily="Mona Sans"
       >
         Own Your Workout
@@ -55,7 +55,7 @@ export function Home() {
             lineHeight: 1,
             fontWeight: 600,
             textAlign: "center",
-            color: "#00301E",
+            color: "#7135C7",
             marginBottom: "16px",
           }}
         >
@@ -71,7 +71,7 @@ export function Home() {
             lineHeight: "30px",
             fontWeight: 400,
             textAlign: "center",
-            color: "#00301E",
+            color: "#2B2B2B",
             marginBottom: "56px",
           }}
         >

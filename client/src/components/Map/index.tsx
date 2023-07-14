@@ -39,8 +39,8 @@ import {
 mapboxgl.accessToken = env.VITE_MAPBOX_API_KEY;
 
 const DEFAULT_STYLE = {
-  lineWidth: 4,
-  color: { r: 249, g: 115, b: 22 },
+  lineWidth: 10,
+  color: { r: 113, g: 53, b: 199 },
 };
 
 export function MapProvider({ children }) {
@@ -57,12 +57,8 @@ export function MapProvider({ children }) {
   );
 
   const clear = useCallback(() => {
-    console.log("clearing");
     setStyledPathGroups(() => {
       if (map.current) clearSources(map.current);
-      else {
-        console.log("failed to clear sources");
-      }
       return [];
     });
   }, [setStyledPathGroups]);
@@ -331,8 +327,8 @@ export function Map() {
         <Fab
           size="medium"
           sx={{
-            color: "#00301E",
-            backgroundColor: "#F6F8F4",
+            color: "#7135C7",
+            backgroundColor: "#F6F4F8",
             borderRadius: "30%",
             ":hover": {
               backgroundColor: "rgb(226,230,220)",
@@ -365,8 +361,8 @@ export function Map() {
         <Fab
           size="medium"
           sx={{
-            color: "#00301E",
-            backgroundColor: "#F6F8F4",
+            color: "#7135C7",
+            backgroundColor: "#F6F4F8",
             borderRadius: "30%",
             ":hover": {
               backgroundColor: "rgb(226,230,220)",
@@ -478,7 +474,7 @@ function StyleDialog({
       PaperProps={{
         style: {
           overflow: "hidden",
-          backgroundColor: "#F6F8F4",
+          backgroundColor: "#F6F4F8",
           padding: "24px",
           borderRadius: "24px",
         },

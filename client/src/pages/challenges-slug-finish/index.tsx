@@ -9,6 +9,7 @@ import { useMapContext } from "../../components/Map/hooks";
 import { useEffect, useMemo } from "react";
 import { rgbToHex } from "../../components/Map/utils";
 import { StyledPathGroup } from "../../state";
+import { Geojson } from "../../components/Geojson";
 
 export function Finish() {
   const { slug } = useParams();
@@ -37,6 +38,7 @@ export function Finish() {
           position: "relative",
           width: "100%",
           height: "100%",
+          paddingTop: "24px",
           paddingBottom: "48px",
           display: "flex",
           flexDirection: "column",
@@ -48,8 +50,8 @@ export function Finish() {
       >
         <div
           style={{
-            backgroundColor: "#C9E7AC",
-            color: "#00301E",
+            backgroundColor: "#9afcc5",
+            color: "#7135C7",
             width: "144px",
             height: "144px",
             borderRadius: "50%",
@@ -79,7 +81,7 @@ export function Finish() {
             width: "80%",
             flex: "1 1 0%",
             padding: "0 24px",
-            minWidth: "320px",
+            maxHeight: "320px",
           }}
         >
           <Geojson styledPathGroups={styledPathGroups} />
@@ -92,64 +94,5 @@ export function Finish() {
         </Link>
       </div>
     </Layout>
-  );
-}
-
-function Geojson({
-  styledPathGroups,
-}: {
-  styledPathGroups: StyledPathGroup[];
-}) {
-  useEffect(() => {
-    console.log(styledPathGroups);
-  }, [styledPathGroups]);
-
-  const { minX, minY, maxX, maxY } = useMemo(
-    () =>
-      styledPathGroups
-        .map(({ paths }) => paths)
-        .flat()
-        .flat()
-        .reduce(
-          (acc, [lng, lat]) => ({
-            minX: Math.min(acc.minX, lng),
-            maxX: Math.max(acc.maxX, lng),
-            minY: Math.min(acc.minY, lat),
-            maxY: Math.max(acc.maxY, lat),
-          }),
-          { minX: Infinity, minY: Infinity, maxX: -Infinity, maxY: -Infinity }
-        ),
-    [styledPathGroups]
-  );
-
-  const scale = 360 / (maxX - minX);
-  const padding = 24;
-
-  const viewBox = `${-padding} ${-padding} ${
-    (maxX - minX) * scale + padding * 2
-  } ${(maxY - minY) * scale + padding * 2}`;
-  return (
-    <svg viewBox={viewBox}>
-      {styledPathGroups.map((group, index) => (
-        <g key={index} style={{ color: rgbToHex(group.style.color) }}>
-          {group.paths.map((path, index) => (
-            <path
-              key={index}
-              d={`M ${path
-                .map(
-                  ([lng, lat]) =>
-                    `${(lng - minX) * scale} ${(maxY - lat) * scale}`
-                )
-                .join(" L ")}`}
-              stroke="currentColor"
-              strokeWidth={group.style.lineWidth * 1.5}
-              fill="transparent"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          ))}
-        </g>
-      ))}
-    </svg>
   );
 }

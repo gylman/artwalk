@@ -2,29 +2,11 @@ import { FilterList } from "@mui/icons-material";
 import { Button, Tab, Tabs } from "@mui/material";
 import dayjs from "dayjs";
 import { useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import "swiper/css";
-import cuid from "cuid";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Layout } from "../../components/Layout";
-import { FilterChallengeDialog } from "./FilterChallengeDialog";
-import ramen from "../../assets/images/challenges/ramen.jpg";
-import tree_expert from "../../assets/images/challenges/tree_expert.jpg";
-import tree_difficult from "../../assets/images/challenges/tree_difficult.jpg";
-import tree_hard from "../../assets/images/challenges/tree_hard.jpg";
-import tree_medium from "../../assets/images/challenges/tree_medium.webp";
-import tree_easy from "../../assets/images/challenges/tree_easy.jpg";
-import moth from "../../assets/images/challenges/moth.jpg";
-import mountain from "../../assets/images/challenges/mountain.jpg";
-import mouth from "../../assets/images/challenges/mouth.png";
-import leaves from "../../assets/images/challenges/leaves.jpg";
-import car from "../../assets/images/challenges/car.jpg";
-import alien from "../../assets/images/challenges/alien.png";
-import pianist from "../../assets/images/challenges/pianist.jpg";
-import sea_scape from "../../assets/images/challenges/sea_scape.webp";
-import { Challenge } from "../../components/Challenge";
-
 import styled from "styled-components";
+import { Challenge } from "../../components/Challenge";
+import { Layout } from "../../components/Layout";
+import { challenges } from "../../constants";
+import { FilterChallengeDialog } from "./FilterChallengeDialog";
 
 const ChallengesContainer = styled.div`
   display: flex;
@@ -32,135 +14,6 @@ const ChallengesContainer = styled.div`
   gap: 24px;
   width: 100%;
 `;
-
-const challenges = [
-  {
-    id: cuid(),
-    imgUrl: ramen,
-    pricing: "Premium",
-    title: "Ramen",
-    numOfParticipants: 23,
-    deadline: new Date(),
-    difficulty: "MEDIUM",
-  },
-  {
-    id: cuid(),
-    imgUrl: sea_scape,
-    pricing: "Free",
-    title: "Sea",
-    numOfParticipants: 23,
-    deadline: new Date(),
-    difficulty: "MEDIUM",
-  },
-  {
-    id: cuid(),
-    imgUrl: alien,
-    pricing: "Premium",
-    title: "Alien",
-    numOfParticipants: 23,
-    deadline: new Date(),
-    difficulty: "MEDIUM",
-  },
-  {
-    id: cuid(),
-    imgUrl: leaves,
-    pricing: "Free",
-    title: "Leaves",
-    numOfParticipants: 23,
-    deadline: new Date(),
-    difficulty: "MEDIUM",
-  },
-  {
-    id: cuid(),
-    imgUrl: car,
-    pricing: "Free",
-    title: "AUDI",
-    numOfParticipants: 23,
-    deadline: new Date(),
-    difficulty: "MEDIUM",
-  },
-  {
-    id: cuid(),
-    imgUrl: mouth,
-    pricing: "Premium",
-    title: "Mouth",
-    numOfParticipants: 23,
-    deadline: new Date(),
-    difficulty: "MEDIUM",
-  },
-  {
-    id: cuid(),
-    imgUrl: mountain,
-    pricing: "Premium",
-    title: "Mountains",
-    numOfParticipants: 23,
-    deadline: new Date(),
-    difficulty: "MEDIUM",
-  },
-  {
-    id: cuid(),
-    imgUrl: moth,
-    pricing: "Premium",
-    title: "Moth",
-    numOfParticipants: 23,
-    deadline: new Date(),
-    difficulty: "MEDIUM",
-  },
-  {
-    id: cuid(),
-    imgUrl: pianist,
-    pricing: "Premium",
-    title: "Pianist",
-    numOfParticipants: 23,
-    deadline: new Date(),
-    difficulty: "MEDIUM",
-  },
-  {
-    id: cuid(),
-    imgUrl: tree_easy,
-    pricing: "Premium",
-    title: "Tree simple",
-    numOfParticipants: 23,
-    deadline: new Date(),
-    difficulty: "Easy",
-  },
-  {
-    id: cuid(),
-    pricing: "Free",
-    imgUrl: tree_difficult,
-    title: "Tough tree",
-    numOfParticipants: 248,
-    deadline: new Date(),
-    difficulty: "Hard",
-  },
-  {
-    id: cuid(),
-    pricing: "Detailed tree",
-    title: "Detailed tree",
-    imgUrl: tree_hard,
-    numOfParticipants: 3,
-    deadline: new Date(),
-    difficulty: "MEDIUM",
-  },
-  {
-    id: cuid(),
-    imgUrl: tree_expert,
-    pricing: "Premium",
-    title: "TreeXpert",
-    numOfParticipants: 5667,
-    deadline: new Date(),
-    difficulty: "Expert",
-  },
-  {
-    id: cuid(),
-    imgUrl: tree_medium,
-    pricing: "Premium",
-    title: "Tree OK",
-    numOfParticipants: 5667,
-    deadline: new Date(),
-    difficulty: "Expert",
-  },
-];
 
 function a11yProps(index) {
   return {
@@ -177,21 +30,12 @@ export function Challenges() {
   });
 
   const [tabIndex, setTabIndex] = useState(0);
-  const swiperRef = useRef(null);
 
   const [isFilterChallengeDialogOpen, setIsFilterChallengeDialogOpen] =
     useState(false);
 
   const handleChange = (newValue) => {
     setTabIndex(newValue);
-    swiperRef.current?.slideTo(newValue);
-  };
-  const onSwiper = (currentSwiper) => {
-    const swiperInstance = currentSwiper;
-    swiperRef.current = swiperInstance;
-  };
-  const onSlideChange = (currentSwiper) => {
-    setTabIndex(currentSwiper.activeIndex);
   };
 
   return (
@@ -215,58 +59,39 @@ export function Challenges() {
           position: "sticky",
           top: 0,
           zIndex: 30,
-          backgroundColor: "#F6F8F4",
+          backgroundColor: "rgb(246, 244, 248)",
         }}
       >
         <Tab label="Competitive" {...a11yProps(0)} />
         <Tab label="Creative" {...a11yProps(1)} />
       </Tabs>
 
-      <Swiper
-        simulateTouch={false}
-        spaceBetween={50}
-        slidesPerView={1}
-        onSwiper={onSwiper}
-        onSlideChange={onSlideChange}
-        style={{
-          width: "100%",
-          flex: "1 1 0%",
-        }}
-      >
-        {/* Challenge page */}
-        <SwiperSlide>
-          <TabPanel value={tabIndex} index={0}>
-            <Button
-              variant="outlined"
-              startIcon={<FilterList />}
-              style={{ borderRadius: 9999, marginBottom: "8px" }}
-              onClick={() => setIsFilterChallengeDialogOpen(true)}
-            >
-              Filter challenge
-            </Button>
-            <Button
-              style={{
-                borderRadius: 9999,
-                color: "#757575",
-                padding: "5px 15px",
-                marginBottom: "16px",
-              }}
-            >
-              Suggest a new challenge
-            </Button>
-            <ChallengesContainer>
-              {challenges.map((challenge) => (
-                <Challenge key={challenge.id} {...challenge} />
-              ))}
-            </ChallengesContainer>
-          </TabPanel>
-        </SwiperSlide>
-
-        {/* */}
-        <SwiperSlide>
-          <TabPanel value={tabIndex} index={1}></TabPanel>
-        </SwiperSlide>
-      </Swiper>
+      <TabPanel value={tabIndex} index={0}>
+        <Button
+          variant="outlined"
+          startIcon={<FilterList />}
+          style={{ borderRadius: 9999, marginBottom: "8px" }}
+          onClick={() => setIsFilterChallengeDialogOpen(true)}
+        >
+          Filter challenge
+        </Button>
+        <Button
+          style={{
+            borderRadius: 9999,
+            color: "#757575",
+            padding: "5px 15px",
+            marginBottom: "16px",
+          }}
+        >
+          Suggest a new challenge
+        </Button>
+        <ChallengesContainer>
+          {challenges.map((challenge) => (
+            <Challenge key={challenge.id} {...challenge} />
+          ))}
+        </ChallengesContainer>
+      </TabPanel>
+      <TabPanel value={tabIndex} index={1}></TabPanel>
 
       <FilterChallengeDialog
         isOpen={isFilterChallengeDialogOpen}

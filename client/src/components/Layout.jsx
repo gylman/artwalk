@@ -20,7 +20,7 @@ export function Layout(
   return (
     <Frame
       wrapperStyle={{
-        backgroundColor: "#F6F8F4",
+        backgroundColor: "#F6F4F8",
       }}
       {...props}
     >

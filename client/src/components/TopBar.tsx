@@ -17,8 +17,8 @@ export function TopBar({
       elevation={0}
       sx={{
         position: "relative",
-        backgroundColor: "#F6F8F4",
-        color: "#00301E",
+        backgroundColor: "#F6F4F8",
+        color: "#7135C7",
         border: "none",
         height: "84px",
         ...sx,

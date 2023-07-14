@@ -1,0 +1,138 @@
+export type ChallengeSpec = {
+  id: string;
+  imgUrl: string;
+  pricing: string;
+  title: string;
+  numOfParticipants: number;
+  deadline: string | Date;
+  difficulty: "Easy" | "Medium" | "Hard" | "Expert";
+};
+
+export const challenges: ChallengeSpec[] = [
+  {
+    id: "ramen",
+    imgUrl: "/images/challenges/ramen.jpg",
+    pricing: "Premium",
+    title: "Ramen",
+    numOfParticipants: 23,
+    deadline: "date",
+    difficulty: "Medium",
+  },
+  {
+    id: "sea_scape",
+    imgUrl: "/images/challenges/sea_scape.webp",
+    pricing: "Free",
+    title: "Sea",
+    numOfParticipants: 23,
+    deadline: "date",
+    difficulty: "Medium",
+  },
+  {
+    id: "alien",
+    imgUrl: "/images/challenges/alien.png",
+    pricing: "Premium",
+    title: "Alien",
+    numOfParticipants: 23,
+    deadline: "date",
+    difficulty: "Medium",
+  },
+  {
+    id: "leaves",
+    imgUrl: "/images/challenges/leaves.jpg",
+    pricing: "Free",
+    title: "Leaves",
+    numOfParticipants: 23,
+    deadline: "date",
+    difficulty: "Medium",
+  },
+  {
+    id: "car",
+    imgUrl: "/images/challenges/car.jpg",
+    pricing: "Free",
+    title: "AUDI",
+    numOfParticipants: 23,
+    deadline: "date",
+    difficulty: "Medium",
+  },
+  {
+    id: "mouth",
+    imgUrl: "/images/challenges/mouth.png",
+    pricing: "Premium",
+    title: "Mouth",
+    numOfParticipants: 23,
+    deadline: "date",
+    difficulty: "Medium",
+  },
+  {
+    id: "mountain",
+    imgUrl: "/images/challenges/mountain.jpg",
+    pricing: "Premium",
+    title: "Mountains",
+    numOfParticipants: 23,
+    deadline: "date",
+    difficulty: "Medium",
+  },
+  {
+    id: "moth",
+    imgUrl: "/images/challenges/moth.jpg",
+    pricing: "Premium",
+    title: "Moth",
+    numOfParticipants: 23,
+    deadline: "date",
+    difficulty: "Medium",
+  },
+  {
+    id: "pianist",
+    imgUrl: "/images/challenges/pianist.jpg",
+    pricing: "Premium",
+    title: "Pianist",
+    numOfParticipants: 23,
+    deadline: "date",
+    difficulty: "Medium",
+  },
+  {
+    id: "tree_easy",
+    imgUrl: "/images/challenges/tree_easy.jpg",
+    pricing: "Premium",
+    title: "Tree simple",
+    numOfParticipants: 23,
+    deadline: "date",
+    difficulty: "Easy",
+  },
+  {
+    id: "tree_difficult",
+    pricing: "Free",
+    imgUrl: "/images/challenges/tree_difficult.jpg",
+    title: "Tough tree",
+    numOfParticipants: 248,
+    deadline: "date",
+    difficulty: "Hard",
+  },
+  {
+    id: "tree_hard",
+    pricing: "Detailed tree",
+    title: "Detailed tree",
+    imgUrl: "/images/challenges/tree_hard.jpg",
+    numOfParticipants: 3,
+    deadline: "date",
+    difficulty: "Medium",
+  },
+  {
+    id: "tree_expert",
+    imgUrl: "/images/challenges/tree_expert.jpg",
+    pricing: "Premium",
+    title: "TreeXpert",
+    numOfParticipants: 5667,
+    deadline: "date",
+    difficulty: "Expert",
+  },
+  {
+    id: "tree_medium",
+    imgUrl: "/images/challenges/tree_medium.webp",
+    pricing: "Premium",
+    title: "Tree OK",
+    numOfParticipants: 5667,
+    deadline: "date",
+    difficulty: "Expert",
+  },
+];

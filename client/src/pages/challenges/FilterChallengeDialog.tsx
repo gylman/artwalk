@@ -84,7 +84,7 @@ export function FilterChallengeDialog<FilterSpec extends FilterSpecBase>({
 
         <DialogContent
           sx={{
-            backgroundColor: "#F6F8F4",
+            backgroundColor: "#F6F4F8",
             display: "flex",
             flexDirection: "column",
             gap: "24px",
@@ -176,7 +176,7 @@ export function FilterChallengeDialog<FilterSpec extends FilterSpecBase>({
               fontSize: 14,
               height: 48,
               borderRadius: 24,
-              color: "#C9E7AC",
+              color: "#9afcc5",
               width: "fit-content",
               letterSpacing: "1px",
             }}
