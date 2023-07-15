@@ -1,6 +1,5 @@
 import { ArrowBack } from "@mui/icons-material";
 import { IconButton, Typography } from "@mui/material";
-import { useAtom } from "jotai";
 import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Geojson } from "../../components/Geojson";
@@ -9,7 +8,6 @@ import { Layout } from "../../components/Layout";
 import { useMapContext } from "../../components/Map/hooks";
 import { PrimaryButton } from "../../components/PrimaryButton";
 import { TopBar } from "../../components/TopBar";
-import { currentChallengeAtom } from "../../state";
 
 export function Finish() {
   const { slug } = useParams();
