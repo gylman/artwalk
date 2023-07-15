@@ -1,13 +1,13 @@
 import { ArrowBack } from "@mui/icons-material";
 import { IconButton, TextField } from "@mui/material";
 import { useState } from "react";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Layout } from "../../components/Layout";
 import { PrimaryButton } from "../../components/PrimaryButton";
 import { TopBar } from "../../components/TopBar";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { challenges } from "../../constants";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 const Main = styled.div`
   display: flex;

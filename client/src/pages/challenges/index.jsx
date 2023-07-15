@@ -1,14 +1,14 @@
 import { FilterList } from "@mui/icons-material";
 import { Button, Tab, Tabs, Typography } from "@mui/material";
+import { useAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Challenge } from "../../components/Challenge";
 import { Layout } from "../../components/Layout";
 import { challenges } from "../../constants";
-import { FilterChallengeDialog } from "./FilterChallengeDialog";
-import { useAtom } from "jotai";
 import { currentChallengeAtom } from "../../state";
-import { useNavigate } from "react-router-dom";
+import { FilterChallengeDialog } from "./FilterChallengeDialog";
 
 const ChallengesContainer = styled.div`
   display: flex;

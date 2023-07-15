@@ -1,6 +1,6 @@
 import { LinearProgress, Typography } from "@mui/material";
 import { useAtom } from "jotai";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import Confetti from "react-confetti";
 import { useNavigate, useParams } from "react-router-dom";
 import useWindowSize from "react-use/lib/useWindowSize";
@@ -8,10 +8,10 @@ import { Geojson } from "../../components/Geojson";
 import { Layout } from "../../components/Layout";
 import { useMapContext } from "../../components/Map/hooks";
 import { PrimaryButton } from "../../components/PrimaryButton";
+import { SecondaryButton } from "../../components/SecondaryButton";
 import { TopBar } from "../../components/TopBar";
 import { useWarnOnBackButton } from "../../hooks/useWarnOnBackButton";
 import { challengeStatesAtom, currentChallengeAtom } from "../../state";
-import { SecondaryButton } from "../../components/SecondaryButton";
 
 async function fetchSimilarityResult() {
   await new Promise((r) => setTimeout(r, 3000));

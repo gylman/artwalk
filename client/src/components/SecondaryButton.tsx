@@ -7,7 +7,14 @@ export function SecondaryButton({
   sx,
   onClick,
 }: PropsWithChildren<{
-  color?: string;
+  color?:
+    | "inherit"
+    | "primary"
+    | "secondary"
+    | "success"
+    | "error"
+    | "info"
+    | "warning";
   sx?: SxProps;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }>) {

@@ -1,8 +1,11 @@
 import { ArrowBack } from "@mui/icons-material";
 import { IconButton, Typography } from "@mui/material";
+import { animated, useSpring } from "@react-spring/web";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
+import Confetti from "react-confetti";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import useWindowSize from "react-use/lib/useWindowSize";
 import { Geojson } from "../../components/Geojson";
 import { Layout } from "../../components/Layout";
 import { Medal } from "../../components/Medal";
@@ -11,9 +14,6 @@ import { TopBar } from "../../components/TopBar";
 import { challenges } from "../../constants";
 import { useNow } from "../../hooks/useNow";
 import { challengeStatesAtom } from "../../state";
-import { useSpring, animated, useSpringRef, useChain } from "@react-spring/web";
-import Confetti from "react-confetti";
-import useWindowSize from "react-use/lib/useWindowSize";
 
 export function Results() {
   const { width, height } = useWindowSize();

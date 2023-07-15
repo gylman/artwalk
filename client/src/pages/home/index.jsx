@@ -1,9 +1,9 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Frame } from "../../components/Frame";
-import background from "./background.svg";
 import { PrimaryButton } from "../../components/PrimaryButton";
+import background from "./background.svg";
 
 export function Home() {
   // TODO: connect wallet

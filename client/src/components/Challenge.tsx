@@ -1,12 +1,11 @@
-import { Button, Typography } from "@mui/material";
-import styled from "styled-components";
-import { Card, CardActions, CardMedia } from "@mui/material";
-import { Link } from "react-router-dom";
 import { PeopleOutline } from "@mui/icons-material";
-import type { ChallengeSpec } from "../constants";
-import { useMemo } from "react";
-import { challengeStatesAtom } from "../state";
+import { Button, Card, CardActions, CardMedia } from "@mui/material";
 import { useAtom } from "jotai";
+import { useMemo } from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import type { ChallengeSpec } from "../constants";
+import { challengeStatesAtom } from "../state";
 
 const Tag = styled.div`
   position: absolute;

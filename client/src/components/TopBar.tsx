@@ -1,4 +1,4 @@
-import { AppBar, type SxProps, Toolbar, Typography } from "@mui/material";
+import { AppBar, Toolbar, Typography, type SxProps } from "@mui/material";
 
 export function TopBar({
   sx,

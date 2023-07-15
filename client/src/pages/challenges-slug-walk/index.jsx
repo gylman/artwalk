@@ -1,18 +1,18 @@
 import { ArrowBack } from "@mui/icons-material";
 import { ButtonBase, Dialog, IconButton } from "@mui/material";
+import { useAtom } from "jotai";
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Layout } from "../../components/Layout";
 import { Map } from "../../components/Map";
-import { useWarnOnBackButton } from "../../hooks/useWarnOnBackButton";
+import { useMapContext } from "../../components/Map/hooks";
 import { PrimaryButton } from "../../components/PrimaryButton";
 import { SecondaryButton } from "../../components/SecondaryButton";
 import { TopBar } from "../../components/TopBar";
 import { Turtle } from "../../components/Turtle";
-import { useMapContext } from "../../components/Map/hooks";
-import { useAtom } from "jotai";
-import { challengeStatesAtom, currentChallengeAtom } from "../../state";
 import { useNow } from "../../hooks/useNow";
+import { useWarnOnBackButton } from "../../hooks/useWarnOnBackButton";
+import { challengeStatesAtom, currentChallengeAtom } from "../../state";
 
 export function Walk() {
   const { slug } = useParams();
@@ -21,7 +21,7 @@ export function Walk() {
 
   const [isImageDisplayOpen, setIsImageDisplayOpen] = useState(false);
   const [, setCurrentChallenge] = useAtom(currentChallengeAtom);
-  const [challengeStates, setChallengeStates] = useAtom(challengeStatesAtom);
+  const [challengeStates] = useAtom(challengeStatesAtom);
 
   const onBackButtonCallback = useCallback(() => {
     const yes = confirm("Do you really want to quit walking?");

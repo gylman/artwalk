@@ -1,16 +1,15 @@
-import { Button, IconButton, Typography } from "@mui/material";
-import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowBack } from "@mui/icons-material";
-import { Layout } from "../../components/Layout";
-import { TopBar } from "../../components/TopBar";
-import { HiFive } from "../../components/HiFive";
-import { PrimaryButton } from "../../components/PrimaryButton";
-import { useMapContext } from "../../components/Map/hooks";
-import { useEffect, useMemo } from "react";
-import { rgbToHex } from "../../components/Map/utils";
-import { StyledPathGroup, currentChallengeAtom } from "../../state";
-import { Geojson } from "../../components/Geojson";
+import { IconButton, Typography } from "@mui/material";
 import { useAtom } from "jotai";
+import { useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Geojson } from "../../components/Geojson";
+import { HiFive } from "../../components/HiFive";
+import { Layout } from "../../components/Layout";
+import { useMapContext } from "../../components/Map/hooks";
+import { PrimaryButton } from "../../components/PrimaryButton";
+import { TopBar } from "../../components/TopBar";
+import { currentChallengeAtom } from "../../state";
 
 export function Finish() {
   const { slug } = useParams();

@@ -1,7 +1,7 @@
 import { Avatar, Box, Typography } from "@mui/material";
+import { useParams } from "react-router-dom";
 import { Layout } from "../../components/Layout";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { useParams } from "react-router-dom";
 
 // TODO: replace it by the real thing
 function getUser(slug) {

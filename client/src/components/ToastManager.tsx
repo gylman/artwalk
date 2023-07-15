@@ -1,11 +1,11 @@
-import { Button, Snackbar, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { useAtom } from "jotai";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { SnackbarProvider, useSnackbar } from "notistack";
+import { useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { challengeStatesAtom, currentChallengeAtom } from "../state";
-import { SnackbarProvider, VariantType, useSnackbar } from "notistack";
 import { challenges } from "../constants";
 import { useNow, useNowSetter } from "../hooks/useNow";
+import { challengeStatesAtom } from "../state";
 
 export function ToastManager() {
   useNowSetter();
@@ -34,63 +34,6 @@ export function ToastManager() {
       ))}
     </SnackbarProvider>
   );
-
-  //   const [toastShown, setToastShown] = useState(false);
-  //   const [isToastOpen, setIsToastOpen] = useState(false);
-
-  //   const navigate = useNavigate();
-
-  //   useEffect(() => {
-  //     if (toastShown) return;
-
-  //     const check = () => {
-  //       const showResultAt = localStorage.getItem(`showResultAt__ramen`);
-  //       if (!showResultAt) return;
-  //       if (localStorage.getItem(`resultShown__ramen`)) return;
-
-  //       const timestamp = parseInt(showResultAt);
-  //       if (timestamp < Date.now()) {
-  //         setToastShown(true);
-  //         setIsToastOpen(true);
-  //       }
-  //     };
-
-  //     check();
-  //     const interval = setInterval(check, 1000);
-
-  //     return () => clearInterval(interval);
-  //   }, [toastShown]);
-
-  //   return (
-  //     <Snackbar
-  //       open={isToastOpen}
-  //       message="The challenge 'Ramen' ished! You wanna see the results?"
-  //       action={
-  //         <Button
-  //           sx={{
-  //             color: "#9AFCC5",
-  //           }}
-  //           size="small"
-  //           onClick={() => {
-  //             setIsToastOpen(false);
-  //             localStorage.setItem(`resultShown__ramen`, "true");
-  //             navigate("/challenges/ramen/results");
-  //           }}
-  //         >
-  //           Show me results
-  //         </Button>
-  //       }
-  //       sx={{
-  //         bottom: { xs: 90, sm: 0 },
-  //         marginX: "24px",
-  //       }}
-  //       ContentProps={{
-  //         sx: {
-  //           backgroundColor: "#7135C7",
-  //         },
-  //       }}
-  //     />
-  //   );
 }
 
 function ToastItem({ id, title }: { id: string; title: string }) {
