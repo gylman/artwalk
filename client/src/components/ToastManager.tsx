@@ -97,6 +97,7 @@ function ToastItem({ id, title }: { id: string; title: string }) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const shown = useRef(false);
   const [challengeStates, setChallengeStates] = useAtom(challengeStatesAtom);
+  const navigate = useNavigate();
 
   const dismiss = (toastId: string | number) => {
     setChallengeStates((s) =>
@@ -121,6 +122,7 @@ function ToastItem({ id, title }: { id: string; title: string }) {
         }}
         size="small"
         onClick={() => {
+          navigate(`/challenges/${id}/results`);
           dismiss(toastId);
         }}
       >

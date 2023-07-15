@@ -86,7 +86,6 @@ export function Results() {
 
   return (
     <Layout
-      isBottomNavigationHidden
       style={{
         display: "flex",
         flexDirection: "column",
@@ -105,7 +104,7 @@ export function Results() {
         style={{
           position: "relative",
           width: "100%",
-          height: "100%",
+          height: "calc(100% - 84px - 56px)",
           paddingTop: "24px",
           paddingBottom: "48px",
           display: "flex",
