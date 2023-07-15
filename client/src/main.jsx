@@ -1,6 +1,5 @@
 import { createTheme, ThemeProvider } from "@mui/material";
 import { grey, red } from "@mui/material/colors";
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { App } from "./App";
