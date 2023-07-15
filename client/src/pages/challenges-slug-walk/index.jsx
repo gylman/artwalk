@@ -108,7 +108,7 @@ export function Walk() {
         style={{
           position: "fixed",
           width: "100%",
-          height: "calc(100% - 84px)",
+          height: "calc(100% - 84px - 24px)",
           left: 0,
           top: 0,
         }}

@@ -1,6 +1,6 @@
 import type { CircleLayer, GeoJSONSource, LineLayer } from "mapbox-gl";
 import type { RgbColor } from "react-colorful";
-import type { Path, PathStyle } from "../../state";
+import type { Path, PathStyle, StyledPathGroup } from "../../state";
 
 export const DEFAULT_LONGITUDE = 126.986;
 export const DEFAULT_LATITUDE = 37.541;
@@ -247,4 +247,33 @@ export function isStyleSame(a: PathStyle, b: PathStyle) {
     a.color.g === b.color.g &&
     a.color.b === b.color.b
   );
+}
+
+export function getTotalDistance(groups: StyledPathGroup[]) {
+  return groups
+    .map((group) => group.paths)
+    .flat()
+    .map((path) =>
+      path.map((p1, i) => {
+        if (i === 0) return 0;
+
+        const LNG = 0;
+        const LAT = 1;
+        const p2 = path[i - 1];
+
+        const R = 6371e3; // metres
+        const φ1 = (p1[LAT] * Math.PI) / 180; // φ, λ in radians
+        const φ2 = (p2[LAT] * Math.PI) / 180;
+        const Δφ = ((p2[LAT] - p1[LAT]) * Math.PI) / 180;
+        const Δλ = ((p2[LNG] - p2[LNG]) * Math.PI) / 180;
+
+        const a =
+          Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+          Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c; // in metres
+      })
+    )
+    .flat()
+    .reduce((a, b) => a + b, 0);
 }
