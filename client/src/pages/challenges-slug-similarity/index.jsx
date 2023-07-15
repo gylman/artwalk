@@ -91,6 +91,7 @@ export function Similarity() {
           alignItems: "center",
           gap: "32px",
           overflowY: "auto",
+          overflowX: "hidden",
         }}
       >
         {isSimilarityComputed
@@ -183,7 +184,6 @@ export function Similarity() {
 
         <div
           style={{
-            width: "80%",
             flex: "1 1 0%",
             padding: "0 48px",
           }}

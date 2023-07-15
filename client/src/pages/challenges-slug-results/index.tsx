@@ -113,6 +113,7 @@ export function Results() {
           alignItems: "center",
           gap: "32px",
           overflowY: "auto",
+          overflowX: "hidden",
         }}
       >
         <animated.div
@@ -184,7 +185,6 @@ export function Results() {
 
         <animated.div
           style={{
-            width: "80%",
             flex: "1 1 0%",
             padding: "0 48px",
             ...other,
