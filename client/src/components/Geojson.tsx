@@ -3,6 +3,9 @@ import { StyledPathGroup } from "../state";
 import Gloss from "./Gloss";
 import { rgbToHex } from "./Map/utils";
 
+const defaultTo = (num: number, defaultValue: number) =>
+  Number.isFinite(num) ? num : defaultValue;
+
 export function Geojson({
   styledPathGroups,
 }: {
@@ -26,13 +29,16 @@ export function Geojson({
     [styledPathGroups]
   );
 
-  const scale = 360 / Math.max(maxX - minX, maxY - minY);
+  const cosFactor = useMemo(
+    () => Math.cos(defaultTo(((minY + maxY) / 180) * Math.PI, 1)),
+    [minY, maxY]
+  );
+
+  const scale = 360 / Math.max((maxX - minX) * cosFactor, maxY - minY);
   const padding = 36;
 
-  const defaultTo = (num: number, defaultValue: number) =>
-    Number.isFinite(num) ? num : defaultValue;
   const viewBox = `${-padding} ${-padding} ${defaultTo(
-    (maxX - minX) * scale + padding * 2,
+    (maxX - minX) * cosFactor * scale + padding * 2,
     24
   )} ${defaultTo((maxY - minY) * scale + padding * 2, 24)}`;
 
@@ -41,13 +47,13 @@ export function Geojson({
     Math.min(
       2,
       defaultTo(
-        (maxX - minX + (2 * padding) / scale) /
+        ((maxX - minX) * cosFactor + (2 * padding) / scale) /
           (maxY - minY + (2 * padding) / scale),
         1
       )
     )
   );
-  const width = "min(480px, 100vw - 48px)";
+  const width = `min(${Math.min(480, 480 / aspectRatio)}px, 100vw - 96px)`;
 
   return (
     <Gloss
@@ -80,7 +86,9 @@ export function Geojson({
                   d={`M ${path
                     .map(
                       ([lng, lat]) =>
-                        `${(lng - minX) * scale} ${(maxY - lat) * scale}`
+                        `${(lng - minX) * cosFactor * scale} ${
+                          (maxY - lat) * scale
+                        }`
                     )
                     .join(" L ")}`}
                   stroke="currentColor"

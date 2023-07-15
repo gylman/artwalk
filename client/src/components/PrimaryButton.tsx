@@ -5,12 +5,14 @@ export function PrimaryButton({
   children,
   sx,
   onClick,
+  ...props
 }: PropsWithChildren<{
   sx?: SxProps;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }>) {
   return (
     <Button
+      {...props}
       variant="contained"
       color="primary"
       sx={{

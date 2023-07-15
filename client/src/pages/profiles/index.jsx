@@ -2,6 +2,7 @@ import { Avatar, Box, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { Layout } from "../../components/Layout";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { PrimaryButton } from "../../components/PrimaryButton";
 
 // TODO: replace it by the real thing
 function getUser(slug) {
@@ -47,6 +48,17 @@ export function Profile() {
         <Typography variant="h3" fontFamily="Mona Sans" color="primary">
           {user.fullName}
         </Typography>
+
+        <PrimaryButton
+          onClick={() => {
+            if (confirm("Are you sure to clear everything?")) {
+              localStorage.clear();
+              location.href = "/";
+            }
+          }}
+        >
+          Clear everything
+        </PrimaryButton>
       </Box>
     </Layout>
   );

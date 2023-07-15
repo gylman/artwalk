@@ -8,13 +8,18 @@ import { PrimaryButton } from "../../components/PrimaryButton";
 import { TopBar } from "../../components/TopBar";
 import { challenges } from "../../constants";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { challengeStatesAtom } from "../../state";
+import { useAtom } from "jotai";
+import { Geojson } from "../../components/Geojson";
 
 const Main = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   padding: 24px;
-  height: calc(100% - 84px - 56px - 24px);
+  height: calc(100% - 84px - 56px);
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 const Form = styled.form`
@@ -29,8 +34,9 @@ export function MintNFT() {
   const user = useCurrentUser();
   const navigate = useNavigate();
 
+  const [challengeStates] = useAtom(challengeStatesAtom);
+
   const defaultTitle = challenges.find((t) => t.id === slug)?.title ?? "";
-  const [author, setAuthor] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   return (
@@ -50,7 +56,8 @@ export function MintNFT() {
         <Form method="post">
           <TextField
             label={"Author"}
-            value={author}
+            aria-readonly
+            value={user.fullName}
             sx={{
               width: "100%",
               "& input": {
@@ -58,11 +65,9 @@ export function MintNFT() {
               },
             }}
             variant="standard"
-            onChange={(e) => {
-              setAuthor(e.target.value);
-            }}
             placeholder={user.fullName}
             InputLabelProps={{ shrink: true }}
+            InputProps={{ readOnly: true }}
           >
           </TextField>
           <TextField
@@ -78,7 +83,7 @@ export function MintNFT() {
             onChange={(e) => {
               setTitle(e.target.value);
             }}
-            placeholder={defaultTitle}
+            placeholder={`${defaultTitle} by ${user.fullName}`}
             InputLabelProps={{ shrink: true }}
           >
           </TextField>
@@ -101,7 +106,16 @@ export function MintNFT() {
           >
           </TextField>
 
-          <div aria-hidden style={{ flex: "1 1 0%" }} />
+          <div
+            style={{
+              flex: "1 1 0%",
+              padding: "24px",
+            }}
+          >
+            <Geojson
+              styledPathGroups={challengeStates[slug]?.styledPathGroups ?? []}
+            />
+          </div>
 
           <PrimaryButton
             sx={{
