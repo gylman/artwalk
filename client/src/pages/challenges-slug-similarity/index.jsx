@@ -38,10 +38,12 @@ export function Similarity() {
   const isSimilarityComputed = similarity !== null;
 
   useEffect(() => {
-    if (currentChallenge !== slug) {
+    if (
+      JSON.parse(localStorage.getItem("currentChallenge") ?? "null") !== slug
+    ) {
       navigate("/challenges");
     }
-  }, [currentChallenge, slug, navigate]);
+  }, [slug, navigate]);
 
   useEffect(() => {
     if (currentChallenge && similarity === null) {
@@ -112,7 +114,9 @@ export function Similarity() {
                     component="span"
                     fontFamily="Mona Sans"
                   >
-                    89
+                    {similarity && similarity !== 0
+                      ? (similarity * 100).toFixed(0)
+                      : ""}
                   </Typography>
                   <Typography
                     variant="h4"
@@ -181,8 +185,7 @@ export function Similarity() {
           style={{
             width: "80%",
             flex: "1 1 0%",
-            padding: "0 24px",
-            maxHeight: "320px",
+            padding: "0 48px",
           }}
         >
           <Geojson
@@ -227,7 +230,7 @@ export function Similarity() {
                     },
                   }));
                   setCurrentChallenge(null);
-                  navigate("/profiles");
+                  navigate(`/challenges/${slug}/done`);
                 }}
                 sx={{
                   fontSize: "16px",

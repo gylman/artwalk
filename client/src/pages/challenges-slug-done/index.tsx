@@ -1,28 +1,14 @@
 import { ArrowBack } from "@mui/icons-material";
 import { IconButton, Typography } from "@mui/material";
-import { useAtom } from "jotai";
-import { useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { Geojson } from "../../components/Geojson";
-import { HiFive } from "../../components/HiFive";
+import { Link, useNavigate } from "react-router-dom";
 import { Layout } from "../../components/Layout";
-import { useMapContext } from "../../components/Map/hooks";
+import { Plane } from "../../components/Plane";
 import { PrimaryButton } from "../../components/PrimaryButton";
+import { SecondaryButton } from "../../components/SecondaryButton";
 import { TopBar } from "../../components/TopBar";
-import { currentChallengeAtom } from "../../state";
 
-export function Finish() {
-  const { slug } = useParams();
+export function Done() {
   const navigate = useNavigate();
-  const { styledPathGroups } = useMapContext();
-
-  useEffect(() => {
-    if (
-      JSON.parse(localStorage.getItem("currentChallenge") ?? "null") !== slug
-    ) {
-      navigate("/challenges");
-    }
-  }, [slug, navigate]);
 
   return (
     <Layout
@@ -38,7 +24,7 @@ export function Finish() {
             <ArrowBack />
           </IconButton>
         }
-        title="Walking Finished"
+        title="Artwork Submitted"
       />
 
       <div
@@ -50,10 +36,10 @@ export function Finish() {
           paddingBottom: "48px",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "space-between",
           alignItems: "center",
           gap: "32px",
           overflowY: "auto",
+          overflowX: "hidden",
         }}
       >
         <div
@@ -68,7 +54,7 @@ export function Finish() {
             flexShrink: 0,
           }}
         >
-          <HiFive />
+          <Plane />
         </div>
 
         <div style={{ textAlign: "center", padding: "0 24px" }}>
@@ -77,32 +63,38 @@ export function Finish() {
             fontFamily="Mona Sans"
             sx={{ marginBottom: "8px" }}
           >
-            Hi-5!
+            Fingers Crossed
           </Typography>
           <Typography
             variant="h5"
             fontFamily="Mona Sans"
             sx={{ color: "#626362" }}
           >
-            Here’s the result of your walking artwork.
+            Wait for the deadline. <br />
+            The top 3 will be able to mint an NFT.
           </Typography>
         </div>
 
         <div
           style={{
-            width: "80%",
-            flex: "1 1 0%",
-            padding: "0 48px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "16px",
+            padding: "24px 0",
           }}
         >
-          <Geojson styledPathGroups={styledPathGroups} />
+          <Link to="/profiles">
+            <SecondaryButton sx={{ fontSize: "16px" }}>
+              Go to your profile
+            </SecondaryButton>
+          </Link>
+          <Link to="/challenges">
+            <PrimaryButton sx={{ fontSize: "16px" }}>
+              Browse new challenges
+            </PrimaryButton>
+          </Link>
         </div>
-
-        <Link to={`/challenges/${slug}/similarity`}>
-          <PrimaryButton sx={{ fontSize: "16px" }}>
-            Check Similarity
-          </PrimaryButton>
-        </Link>
       </div>
     </Layout>
   );

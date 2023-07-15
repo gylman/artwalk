@@ -186,8 +186,7 @@ export function Results() {
           style={{
             width: "80%",
             flex: "1 1 0%",
-            padding: "0 24px",
-            maxHeight: "320px",
+            padding: "0 48px",
             ...other,
           }}
         >
