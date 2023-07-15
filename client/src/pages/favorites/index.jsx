@@ -8,7 +8,6 @@ export function Favorites() {
         flexDirection: "column",
       }}
     >
-      Favorites!
     </Layout>
   );
 }

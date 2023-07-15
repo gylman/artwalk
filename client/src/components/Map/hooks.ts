@@ -75,3 +75,47 @@ export function useWatchPosition({ callback, onError, period = 4_000 }) {
     };
   }, [period, callback, onError, onErrorWithFallback]);
 }
+
+export function useWatchPositionSimulated({
+  callback,
+  onError,
+  period = 4_000,
+}) {
+  const timeout = 2000;
+  const fallbackTimeout = 5000;
+
+  const onErrorWithFallback = useCallback(() => {
+    navigator.geolocation.getCurrentPosition(callback, onError, {
+      enableHighAccuracy: false,
+      maximumAge: 0,
+      timeout: fallbackTimeout,
+    });
+  }, [callback, onError]);
+
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      onError(
+        new Error("navigator.geolocation is not supported on this browser.")
+      );
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(callback, onErrorWithFallback, {
+      enableHighAccuracy: true,
+      maximumAge: 0,
+      timeout,
+    });
+
+    const interval = setInterval(() => {
+      navigator.geolocation.getCurrentPosition(callback, onErrorWithFallback, {
+        enableHighAccuracy: true,
+        maximumAge: 0,
+        timeout,
+      });
+    }, period);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [period, callback, onError, onErrorWithFallback]);
+}

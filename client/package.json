@@ -17,6 +17,7 @@
     "@mui/x-date-pickers": "^6.10.0",
     "@react-spring/web": "^9.7.3",
     "@t3-oss/env-core": "^0.6.0",
+    "@use-gesture/react": "^10.2.27",
     "cuid": "^3.0.0",
     "dayjs": "^1.11.9",
     "jotai": "^2.2.2",
