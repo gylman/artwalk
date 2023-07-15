@@ -60,6 +60,7 @@ export function Challenges() {
         display: "flex",
         flexDirection: "column",
         overflowY: "auto",
+        overflowX: "hidden",
         paddingBottom: "56px",
       }}
     >
@@ -174,6 +175,7 @@ function TabPanel(props) {
         <div
           style={{
             overflowY: "auto",
+            overflowX: "hidden",
             height: "100%",
             display: "flex",
             flexDirection: "column",

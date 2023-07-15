@@ -18,12 +18,6 @@ export function Finish() {
 
   const [currentChallenge] = useAtom(currentChallengeAtom);
 
-  useEffect(() => {
-    if (currentChallenge !== slug) {
-      navigate("/challenges");
-    }
-  }, [currentChallenge, slug, navigate]);
-
   return (
     <Layout
       isBottomNavigationHidden
@@ -54,6 +48,7 @@ export function Finish() {
           alignItems: "center",
           gap: "32px",
           overflowY: "auto",
+          overflowX: "hidden",
         }}
       >
         <div
@@ -90,7 +85,6 @@ export function Finish() {
 
         <div
           style={{
-            width: "80%",
             flex: "1 1 0%",
             padding: "0 24px",
             maxHeight: "320px",
