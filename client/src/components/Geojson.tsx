@@ -52,7 +52,7 @@ export function Geojson({
       )
     )
   );
-  const width = `min(${Math.min(480, 480 / aspectRatio)}px, 100vw - 96px)`;
+  const width = `min(${Math.min(480, 480 * aspectRatio)}px, 100vw - 96px)`;
 
   return (
     <Gloss
