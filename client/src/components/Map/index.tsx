@@ -14,7 +14,7 @@ import {
 import { useAtom } from "jotai";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { RgbColorPicker } from "react-colorful";
 import { env } from "../../env";
 import {
@@ -31,6 +31,7 @@ import {
   DEFAULT_ZOOM,
   clearSources,
   createPath,
+  getTotalDistance,
   isStyleSame,
   setCircle,
   setPathCoordinates,
@@ -295,6 +296,11 @@ export function Map() {
     setCircle(map.current, lastCoordinate, currentStyle);
   }, [currentStyle, isLoaded]);
 
+  const totalDistance = useMemo(
+    () => getTotalDistance(styledPathGroups),
+    [styledPathGroups]
+  );
+
   return (
     <div
       style={{
@@ -411,6 +417,30 @@ export function Map() {
         </div>
       )}
 
+      <Portal>
+        <div
+          style={{
+            position: "fixed",
+            bottom: 76,
+            right: 0,
+            width: "100%",
+            textAlign: "center",
+            zIndex: 30,
+            padding: "0 4px",
+            pointerEvents: "none",
+            color: "#4b4b4b",
+          }}
+        >
+          <Typography fontFamily="Mona Sans">
+            You have walked{" "}
+            <span style={{ color: "#7135C7", fontWeight: 600 }}>
+              {totalDistance.toFixed(0)}
+            </span>{" "}
+            meters!
+          </Typography>
+        </div>
+      </Portal>
+
       {lastAccuracy >= 0 && (
         <Portal>
           <div
@@ -433,7 +463,7 @@ export function Map() {
           <div
             style={{
               position: "fixed",
-              bottom: 84,
+              bottom: 84 + 24,
               left: 0,
               width: "100%",
               textAlign: "center",

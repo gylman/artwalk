@@ -15,8 +15,7 @@ export function Geojson({
     () =>
       styledPathGroups
         .map(({ paths }) => paths)
-        .flat()
-        .flat()
+        .flat(2)
         .reduce(
           (acc, [lng, lat]) => ({
             minX: Math.min(acc.minX, lng),
@@ -30,7 +29,7 @@ export function Geojson({
   );
 
   const cosFactor = useMemo(
-    () => Math.cos(defaultTo(((minY + maxY) / 180) * Math.PI, 1)),
+    () => Math.cos(defaultTo(((minY + maxY) / 360) * Math.PI, 1)),
     [minY, maxY]
   );
 
