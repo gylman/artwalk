@@ -8,13 +8,22 @@ import { PrimaryButton } from "../../components/PrimaryButton";
 import { useMapContext } from "../../components/Map/hooks";
 import { useEffect, useMemo } from "react";
 import { rgbToHex } from "../../components/Map/utils";
-import { StyledPathGroup } from "../../state";
+import { StyledPathGroup, currentChallengeAtom } from "../../state";
 import { Geojson } from "../../components/Geojson";
+import { useAtom } from "jotai";
 
 export function Finish() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { styledPathGroups } = useMapContext();
+
+  const [currentChallenge] = useAtom(currentChallengeAtom);
+
+  useEffect(() => {
+    if (currentChallenge !== slug) {
+      navigate("/challenges");
+    }
+  }, [currentChallenge, slug, navigate]);
 
   return (
     <Layout
@@ -71,7 +80,11 @@ export function Finish() {
           >
             Hi-5!
           </Typography>
-          <Typography variant="h5" fontFamily="Mona Sans">
+          <Typography
+            variant="h5"
+            fontFamily="Mona Sans"
+            sx={{ color: "#626362" }}
+          >
             Here’s the result of your walking artwork.
           </Typography>
         </div>

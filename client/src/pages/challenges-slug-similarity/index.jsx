@@ -1,29 +1,72 @@
-import { Button, LinearProgress, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { LinearProgress, Typography } from "@mui/material";
+import { useAtom } from "jotai";
+import { useEffect, useMemo, useState } from "react";
+import Confetti from "react-confetti";
 import { useNavigate, useParams } from "react-router-dom";
-import { Layout } from "../../components/Layout";
-import { useWarnOnBackButton } from "../../hooks/useWarnOnBackButton";
-import { TopBar } from "../../components/TopBar";
+import useWindowSize from "react-use/lib/useWindowSize";
 import { Geojson } from "../../components/Geojson";
+import { Layout } from "../../components/Layout";
 import { useMapContext } from "../../components/Map/hooks";
 import { PrimaryButton } from "../../components/PrimaryButton";
+import { TopBar } from "../../components/TopBar";
+import { useWarnOnBackButton } from "../../hooks/useWarnOnBackButton";
+import { challengeStatesAtom, currentChallengeAtom } from "../../state";
+import { SecondaryButton } from "../../components/SecondaryButton";
+
+async function fetchSimilarityResult() {
+  await new Promise((r) => setTimeout(r, 3000));
+  return 0.89;
+}
 
 export function Similarity() {
   useWarnOnBackButton();
 
+  const [currentChallenge, setCurrentChallenge] = useAtom(currentChallengeAtom);
   const { slug } = useParams();
   const navigate = useNavigate();
+  const { width, height } = useWindowSize();
 
-  const [isSimilarityComputed, setIsSimilarityComputed] = useState(false);
-  const { styledPathGroups } = useMapContext();
+  const { styledPathGroups, clear } = useMapContext();
+  const [challengeStates, setChallengeStates] = useAtom(challengeStatesAtom);
+  const similarity = useMemo(
+    () =>
+      currentChallenge
+        ? challengeStates[currentChallenge]?.similarity ?? null
+        : null,
+    [challengeStates, currentChallenge],
+  );
+  const isSimilarityComputed = similarity !== null;
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsSimilarityComputed(true);
-    }, 3000);
+    if (currentChallenge !== slug) {
+      navigate("/challenges");
+    }
+  }, [currentChallenge, slug, navigate]);
 
-    return () => clearTimeout(timeout);
-  }, [setIsSimilarityComputed]);
+  useEffect(() => {
+    if (currentChallenge && similarity === null) {
+      fetchSimilarityResult().then((similarity) => {
+        setChallengeStates((s) => ({
+          ...s,
+          [currentChallenge]: {
+            styledPathGroups,
+            similarity,
+            endAt: Number.MAX_SAFE_INTEGER,
+            isSubmitted: false,
+            isResultShown: false,
+            isToastShown: false,
+          },
+        }));
+        clear();
+      });
+    }
+  }, [
+    similarity,
+    currentChallenge,
+    setChallengeStates,
+    styledPathGroups,
+    clear,
+  ]);
 
   return (
     <Layout
@@ -45,6 +88,7 @@ export function Similarity() {
           flexDirection: "column",
           alignItems: "center",
           gap: "32px",
+          overflowY: "auto",
         }}
       >
         {isSimilarityComputed
@@ -59,6 +103,7 @@ export function Similarity() {
                   borderRadius: "50%",
                   display: "grid",
                   placeItems: "center",
+                  flexShrink: 0,
                 }}
               >
                 <div>
@@ -86,10 +131,25 @@ export function Similarity() {
                 >
                   Similarity
                 </Typography>
-                <Typography variant="h5" fontFamily="Mona Sans">
+                <Typography
+                  variant="h5"
+                  fontFamily="Mona Sans"
+                  sx={{ color: "#626362" }}
+                >
                   with the original artwork. Amazing!
                 </Typography>
               </div>
+              <Confetti
+                style={{
+                  position: "fixed",
+                  top: 0,
+                  zIndex: 9999,
+                }}
+                recycle={false}
+                width={width}
+                height={height}
+                numberOfPieces={300}
+              />
             </>
           )
           : (
@@ -110,7 +170,7 @@ export function Similarity() {
               <Typography
                 variant="h5"
                 fontFamily="Mona Sans"
-                sx={{ textAlign: "center" }}
+                sx={{ textAlign: "center", color: "#626362" }}
               >
                 Our AI companion is analysing the similarity
               </Typography>
@@ -125,23 +185,57 @@ export function Similarity() {
             maxHeight: "320px",
           }}
         >
-          <Geojson styledPathGroups={styledPathGroups} />
+          <Geojson
+            styledPathGroups={challengeStates[slug]?.styledPathGroups ??
+              styledPathGroups}
+          />
         </div>
 
         {isSimilarityComputed &&
           (
-            <PrimaryButton
-              onClick={() => {
-                alert("Not implemented, return to the challenge page.");
-                navigate("/challenges");
-              }}
-              variant="contained"
-              sx={{
-                fontSize: "16px",
+            <div
+              style={{
+                display: "flex",
+                gap: "24px",
               }}
             >
-              Submit
-            </PrimaryButton>
+              <SecondaryButton
+                onClick={() => {
+                  setChallengeStates((s) => {
+                    const ss = structuredClone(s);
+                    delete ss[slug];
+                    return ss;
+                  });
+                  setCurrentChallenge(slug);
+                  navigate(`/challenges/${slug}/walk`);
+                }}
+                sx={{
+                  fontSize: "16px",
+                }}
+              >
+                Restart
+              </SecondaryButton>
+
+              <PrimaryButton
+                onClick={() => {
+                  setChallengeStates((s) => ({
+                    ...s,
+                    [currentChallenge]: {
+                      ...s[currentChallenge],
+                      endAt: Date.now() + 30_000,
+                      isSubmitted: true,
+                    },
+                  }));
+                  setCurrentChallenge(null);
+                  navigate("/profiles");
+                }}
+                sx={{
+                  fontSize: "16px",
+                }}
+              >
+                Submit
+              </PrimaryButton>
+            </div>
           )}
       </div>
     </Layout>

@@ -20,6 +20,7 @@ export function PrimaryButton({
         borderRadius: 9999,
         color: "#9afcc5",
         letterSpacing: "1px",
+        flexShrink: 0,
         ...sx,
       }}
       disableElevation

@@ -1,54 +1,17 @@
+import { createTheme, ThemeProvider } from "@mui/material";
+import { grey, red } from "@mui/material/colors";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { createTheme, ThemeProvider } from "@mui/material";
-import { grey, red } from "@mui/material/colors";
-import "./main.css";
-
-import { Home } from "./pages/home";
-import { Challenges } from "./pages/challenges";
-import { Walk } from "./pages/challenges-slug-walk";
-import { Finish } from "./pages/challenges-slug-finish";
-import { Similarity } from "./pages/challenges-slug-similarity";
-import { Profile } from "./pages/profiles";
-import { Favorites } from "./pages/favorites";
+import { App } from "./App";
 import { MapProvider } from "./components/Map";
-import { Challenge } from "./components/Challenge";
+import "./main.css";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Home />,
+    path: "*",
+    Component: App,
   },
-  {
-    path: "/challenges",
-    element: <Challenges />,
-  },
-  {
-    path: "/challenges/:slug/:page",
-    element: <Walk />,
-  },
-  {
-    path: "/challenges/:slug/finish",
-    element: <Finish />,
-  },
-  {
-    path: "/challenges/:slug/similarity",
-    element: <Similarity />,
-  },
-  {
-    path: "/profiles",
-    element: <Profile />,
-  },
-  {
-    path: "/profiles/:id",
-    element: <Profile />,
-  },
-  {
-    path: "/favorites",
-    element: <Favorites />,
-  },
-  { path: "/test", element: <Challenge /> },
 ]);
 
 const theme = createTheme({
@@ -71,11 +34,9 @@ const theme = createTheme({
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <MapProvider>
-        <RouterProvider router={router} />
-      </MapProvider>
-    </ThemeProvider>
-  </React.StrictMode>,
+  <ThemeProvider theme={theme}>
+    <MapProvider>
+      <RouterProvider router={router} />
+    </MapProvider>
+  </ThemeProvider>,
 );

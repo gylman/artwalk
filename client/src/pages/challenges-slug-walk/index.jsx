@@ -10,6 +10,9 @@ import { SecondaryButton } from "../../components/SecondaryButton";
 import { TopBar } from "../../components/TopBar";
 import { Turtle } from "../../components/Turtle";
 import { useMapContext } from "../../components/Map/hooks";
+import { useAtom } from "jotai";
+import { challengeStatesAtom, currentChallengeAtom } from "../../state";
+import { useNow } from "../../hooks/useNow";
 
 export function Walk() {
   const { slug } = useParams();
@@ -17,15 +20,35 @@ export function Walk() {
   const { clear, isEnabled, setIsEnabled, continueWalk } = useMapContext();
 
   const [isImageDisplayOpen, setIsImageDisplayOpen] = useState(false);
+  const [, setCurrentChallenge] = useAtom(currentChallengeAtom);
+  const [challengeStates, setChallengeStates] = useAtom(challengeStatesAtom);
 
   const onBackButtonCallback = useCallback(() => {
     const yes = confirm("Do you really want to quit walking?");
     if (yes) {
       clear();
       navigate("/challenges", { replace: true });
+      setCurrentChallenge(null);
     }
-  }, [navigate, clear]);
+  }, [navigate, clear, setCurrentChallenge]);
   useWarnOnBackButton(onBackButtonCallback);
+
+  useEffect(() => {
+    setCurrentChallenge(slug);
+  }, [setCurrentChallenge, slug]);
+
+  const now = useNow();
+  useEffect(() => {
+    if (!slug) return;
+
+    const currentChallengeState = challengeStates[slug];
+    if (!currentChallengeState) return;
+
+    if (currentChallengeState.endAt <= now) {
+      navigate("/challenges");
+      setCurrentChallenge(null);
+    }
+  }, [slug, navigate, challengeStates, setCurrentChallenge, now]);
 
   return (
     <Layout

@@ -1,9 +1,12 @@
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import styled from "styled-components";
 import { Card, CardActions, CardMedia } from "@mui/material";
 import { Link } from "react-router-dom";
 import { PeopleOutline } from "@mui/icons-material";
 import type { ChallengeSpec } from "../constants";
+import { useMemo } from "react";
+import { challengeStatesAtom } from "../state";
+import { useAtom } from "jotai";
 
 const Tag = styled.div`
   position: absolute;
@@ -67,6 +70,9 @@ const Title = styled.span`
 `;
 
 export const Challenge = (props: ChallengeSpec) => {
+  const [challengeStates] = useAtom(challengeStatesAtom);
+  const now = useMemo(() => Date.now(), []);
+
   return (
     <Card
       sx={{ width: "100%", backgroundColor: "#7135C7", position: "relative" }}
@@ -91,14 +97,41 @@ export const Challenge = (props: ChallengeSpec) => {
         </Row>
         <Row>
           <Text>Deadline</Text>
-          <Text>{props.deadline.toLocaleString("en-US")}</Text>
+          <Text>
+            {props.deadline === "Soon" && challengeStates[props.id]?.endAt
+              ? new Date(challengeStates[props.id].endAt).toLocaleString("en")
+              : props.deadline}
+          </Text>
         </Row>
+        {challengeStates[props.id]?.endAt &&
+          challengeStates[props.id].endAt > now && (
+            <Row>
+              <Text>Waiting the result...</Text>
+            </Row>
+          )}
       </Content>
 
       <CardActions>
-        <Link to={`/challenges/${props.id}/walk`}>
-          <Button sx={{ color: "#9afcc5" }}>START WALKING</Button>
-        </Link>
+        {challengeStates[props.id]?.endAt &&
+        challengeStates[props.id].endAt <= now ? (
+          <Link to={`/challenges/${props.id}/results`}>
+            <Button sx={{ color: "#9afcc5" }}>See results</Button>
+          </Link>
+        ) : challengeStates[props.id]?.isSubmitted ? null : props.id ===
+          "ramen" ? (
+          <Link to={`/challenges/${props.id}/walk`}>
+            <Button sx={{ color: "#9afcc5" }}>Start walking</Button>
+          </Link>
+        ) : (
+          <Button
+            onClick={() => {
+              alert("Sorry, it is not available yet!");
+            }}
+            sx={{ color: "#9afcc5" }}
+          >
+            Start walking
+          </Button>
+        )}
       </CardActions>
     </Card>
   );

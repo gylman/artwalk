@@ -10,7 +10,13 @@ import {
 } from "@mui/material";
 import { ArrowBack } from "@mui/icons-material";
 import type { TransitionProps } from "@mui/material/transitions";
-import { type Dispatch, type SetStateAction, forwardRef } from "react";
+import {
+  type Dispatch,
+  type SetStateAction,
+  forwardRef,
+  useState,
+  useEffect,
+} from "react";
 import { DialogContent } from "@mui/material";
 import { Dayjs } from "dayjs";
 import { LocalizationProvider, DateTimePicker } from "@mui/x-date-pickers";
@@ -58,6 +64,13 @@ export function FilterChallengeDialog<FilterSpec extends FilterSpecBase>({
   };
   setValues;
 }) {
+  const [tempValues, setTempValues] = useState(values);
+  useEffect(() => {
+    if (isOpen) {
+      setTempValues(values);
+    }
+  }, [isOpen, values]);
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Dialog
@@ -100,7 +113,7 @@ export function FilterChallengeDialog<FilterSpec extends FilterSpecBase>({
                     key={item.id}
                     select
                     label={item.label}
-                    value={values[item.id]}
+                    value={tempValues[item.id]}
                     SelectProps={{ native: true }}
                     sx={{
                       width: "100%",
@@ -111,7 +124,7 @@ export function FilterChallengeDialog<FilterSpec extends FilterSpecBase>({
                     helperText={item.helperText}
                     variant="standard"
                     onChange={(e) => {
-                      setValues((v) => ({
+                      setTempValues((v) => ({
                         ...v,
                         [item.id]: e.target.value,
                       }));
@@ -149,9 +162,9 @@ export function FilterChallengeDialog<FilterSpec extends FilterSpecBase>({
                       },
                     }}
                     label={item.label}
-                    value={values[item.id]}
+                    value={tempValues[item.id]}
                     onChange={(newValue) => {
-                      setValues((v) => ({
+                      setTempValues((v) => ({
                         ...v,
                         [item.id]: newValue,
                       }));
@@ -163,7 +176,6 @@ export function FilterChallengeDialog<FilterSpec extends FilterSpecBase>({
           })}
 
           {/* Theme */}
-
           <Button
             variant="contained"
             color="primary"
@@ -181,7 +193,10 @@ export function FilterChallengeDialog<FilterSpec extends FilterSpecBase>({
               letterSpacing: "1px",
             }}
             disableElevation
-            onClick={() => setIsOpen(false)}
+            onClick={() => {
+              setValues(tempValues);
+              setIsOpen(false);
+            }}
           >
             Apply filter
           </Button>

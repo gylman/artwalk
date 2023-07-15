@@ -1,12 +1,14 @@
 import { FilterList } from "@mui/icons-material";
-import { Button, Tab, Tabs } from "@mui/material";
-import dayjs from "dayjs";
-import { useRef, useState } from "react";
+import { Button, Tab, Tabs, Typography } from "@mui/material";
+import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { Challenge } from "../../components/Challenge";
 import { Layout } from "../../components/Layout";
 import { challenges } from "../../constants";
 import { FilterChallengeDialog } from "./FilterChallengeDialog";
+import { useAtom } from "jotai";
+import { currentChallengeAtom } from "../../state";
+import { useNavigate } from "react-router-dom";
 
 const ChallengesContainer = styled.div`
   display: flex;
@@ -24,9 +26,8 @@ function a11yProps(index) {
 
 export function Challenges() {
   const [values, setValues] = useState({
-    theme: "Endangered animals",
-    placesToWalk: "Nature",
-    deadline: dayjs(),
+    difficulty: "All",
+    pricing: "All",
   });
 
   const [tabIndex, setTabIndex] = useState(0);
@@ -37,6 +38,21 @@ export function Challenges() {
   const handleChange = (newValue) => {
     setTabIndex(newValue);
   };
+
+  const filteredChallenges = useMemo(() =>
+    challenges.filter((challenge) => (
+      (values.difficulty === "All" ||
+        challenge.difficulty === values.difficulty) &&
+      (values.pricing === "All" || challenge.pricing === values.pricing)
+    )), [values]);
+
+  const navigate = useNavigate();
+  const [currentChallenge] = useAtom(currentChallengeAtom);
+  useEffect(() => {
+    if (currentChallenge) {
+      navigate(`/challenges/${currentChallenge}/walk`);
+    }
+  }, [currentChallenge, navigate]);
 
   return (
     <Layout
@@ -86,9 +102,33 @@ export function Challenges() {
           Suggest a new challenge
         </Button>
         <ChallengesContainer>
-          {challenges.map((challenge) => (
-            <Challenge key={challenge.id} {...challenge} />
+          {filteredChallenges.map((challenge) => (
+            <Challenge
+              key={challenge.id}
+              {...challenge}
+            />
           ))}
+          {filteredChallenges.length === 0 && (
+            <>
+              <Typography
+                variant="h5"
+                fontFamily="Mona Sans"
+                color="primary"
+                sx={{
+                  textAlign: "center",
+                  paddingTop: "48px",
+                }}
+              >
+                There is no such challenge!
+              </Typography>
+
+              <Typography
+                sx={{ color: "#626362", textAlign: "center" }}
+              >
+                Try to change filter settings.
+              </Typography>
+            </>
+          )}
         </ChallengesContainer>
       </TabPanel>
       <TabPanel value={tabIndex} index={1}></TabPanel>
@@ -99,20 +139,15 @@ export function Challenges() {
         spec={[
           {
             type: "select",
-            id: "theme",
-            label: "Theme",
-            options: ["Endangered animals", "Modern arts"],
+            id: "difficulty",
+            label: "Difficulty",
+            options: ["All", "Easy", "Medium", "Hard", "Expert"],
           },
           {
             type: "select",
-            id: "placesToWalk",
-            label: "Where to you want to walk",
-            options: ["Nature", "City"],
-          },
-          {
-            type: "datetime",
-            id: "deadline",
-            label: "Deadline",
+            id: "pricing",
+            label: "Pricing",
+            options: ["All", "Premium", "Free"],
           },
         ]}
         values={values}

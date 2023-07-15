@@ -15,3 +15,22 @@ export const styledPathGroupsAtom = atomWithStorage<StyledPathGroup[]>(
   "styledPathGroups",
   JSON.parse(localStorage.getItem("styledPathGroups") ?? "[]")
 );
+
+export const currentChallengeAtom = atomWithStorage<string | null>(
+  "currentChallenge",
+  null
+);
+
+export type ChallengeState = {
+  styledPathGroups: StyledPathGroup[];
+  similarity: number;
+  endAt: number;
+  isSubmitted: boolean;
+  isResultShown: boolean;
+  isToastShown: boolean;
+  isMinted: boolean;
+};
+
+export const challengeStatesAtom = atomWithStorage<
+  Record<string, ChallengeState>
+>("challengeStates", {});

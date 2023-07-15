@@ -233,7 +233,7 @@ export function Map() {
     (e: Error) => {
       console.error(e.message);
       setLastError(e.message);
-      if (!e.message.includes("timed")) {
+      if (!e.message.includes("time")) {
         setIsEnabled(false);
       }
     },
@@ -416,17 +416,15 @@ export function Map() {
           <div
             style={{
               position: "fixed",
-              top: 48,
+              top: 0,
               right: 0,
-              backgroundColor: "#12f2",
-              color: "black",
-              zIndex: 9999,
-              padding: 16,
+              color: "#0005",
+              zIndex: 30,
+              padding: "0 4px",
+              pointerEvents: "none",
             }}
           >
-            <Typography variant="h6" fontFamily="Mona Sans">
-              Accuracy: {lastAccuracy} m
-            </Typography>
+            <Typography>Accuracy: {lastAccuracy.toFixed(2)} m</Typography>
           </div>
         </Portal>
       )}
@@ -435,17 +433,17 @@ export function Map() {
           <div
             style={{
               position: "fixed",
-              top: 0,
-              right: 0,
-              backgroundColor: "#f122",
-              color: "black",
-              zIndex: 9999,
-              padding: 16,
+              bottom: 84,
+              left: 0,
+              width: "100%",
+              textAlign: "center",
+              color: "#f23a",
+              zIndex: 30,
+              padding: "0 4px",
+              pointerEvents: "none",
             }}
           >
-            <Typography variant="h6" fontFamily="Mona Sans">
-              {lastError}
-            </Typography>
+            <Typography>{lastError}</Typography>
           </div>
         </Portal>
       )}
