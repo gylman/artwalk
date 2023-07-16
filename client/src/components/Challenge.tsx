@@ -117,7 +117,7 @@ export const Challenge = (props: ChallengeSpec) => {
             <Button sx={{ color: "#9afcc5" }}>See results</Button>
           </Link>
         ) : challengeStates[props.id]?.isSubmitted ? null : props.id ===
-          "ramen" ? (
+          "square" ? (
           <Link to={`/challenges/${props.id}/walk`}>
             <Button sx={{ color: "#9afcc5" }}>Start walking</Button>
           </Link>
