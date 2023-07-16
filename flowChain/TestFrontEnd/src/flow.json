@@ -1,0 +1,86 @@
+{
+	"contracts": {
+		"Profile": {
+			"aliases": {
+				"testnet": "0x2cc4470edce05072"
+			}
+		},
+		"FlowToken": {
+			"source": "",
+			"aliases": {
+				"emulator": "0ae53cb6e3f42a79"
+			}
+		},
+		"FungibleToken": {
+			"source": "./cadence/contracts/FungibleToken.cdc",
+			"aliases": {
+				"emulator": "ee82856bf20e2aa6",
+				"testnet": "0x6223108937e32f96"
+			}
+		},
+		"MetadataViews": {
+			"source": "./cadence/contracts/MetadataViews.cdc",
+			"aliases": {
+				"emulator": "f8d6e0586b0a20c7",
+				"testnet": "0x6223108937e32f96"
+			}
+		},
+		"NonFungibleToken": {
+			"source": "./cadence/contracts/NonFungibleToken.cdc",
+			"aliases": {
+			  "emulator": "0xf8d6e0586b0a20c7",
+			  "testnet": "0x6223108937e32f96",
+			  "mainnet": "0x1d7e57aa55817448"
+			}
+		},
+		"InterfaceNFT": "./cadence/contracts/INFT.cdc",
+		"ViewResolver": {
+			"source": "./cadence/contracts/ViewResolver.cdc",
+			"aliases": {
+				"testnet": "0x6223108937e32f96"
+			}
+		},
+		"NFTForwarding": {
+			"source": "./cadence/contracts/NFTForwarding.cdc",
+			"aliases": {
+				"testnet": "0x6223108937e32f96"
+			}
+		},
+		"ArtWalk_NFT":{
+			"source": "./cadence/contracts/ArtWalk_NFT.cdc",
+			"aliases": {
+				"testnet": "0x6223108937e32f96"
+			}
+		}
+	},
+	"networks": {
+		"emulator": "127.0.0.1:3569",
+		"mainnet": "access.mainnet.nodes.onflow.org:9000",
+		"testnet": "access.devnet.nodes.onflow.org:9000"
+	},
+	"accounts": {
+		"Cosmodude": {
+			"address": "6223108937e32f96",
+			"key": {
+				"type": "file",
+				"location": "Cosmodude.pkey"
+			}
+		},
+		"emulator-account": {
+			"address": "f8d6e0586b0a20c7",
+			"key": "6d12eebfef9866c9b6fa92b97c6e705c26a1785b1e7944da701fc545a51d4673"
+		}
+	},
+	"deployments": {
+		"testnet": {
+			"Cosmodude": [
+				"NonFungibleToken",
+       	 		"ViewResolver",
+        		"MetadataViews",
+        		"FungibleToken",
+        		"NFTForwarding",
+				"ArtWalk_NFT"
+			]
+		}
+	}
+}

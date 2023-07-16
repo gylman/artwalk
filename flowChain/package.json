@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@onflow/fcl": "^1.4.1",
+    "@onflow/sdk": "^1.2.0",
+    "react": "^18.2.0",
+    "type": "module"
+  }
+}
