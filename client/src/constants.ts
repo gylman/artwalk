@@ -10,15 +10,6 @@ export type ChallengeSpec = {
 
 export const challenges: ChallengeSpec[] = [
   {
-    id: "ramen",
-    imgUrl: "/images/challenges/ramen.jpg",
-    pricing: "Premium",
-    title: "Ramen",
-    numOfParticipants: 23,
-    deadline: "Soon",
-    difficulty: "Medium",
-  },
-  {
     id: "sea_scape",
     imgUrl: "/images/challenges/sea_scape.webp",
     pricing: "Free",
@@ -88,6 +79,15 @@ export const challenges: ChallengeSpec[] = [
     title: "Pianist",
     numOfParticipants: 23,
     deadline: "8/4/2023, 7:41:32 PM",
+    difficulty: "Medium",
+  },
+  {
+    id: "ramen",
+    imgUrl: "/images/challenges/ramen.jpg",
+    pricing: "Premium",
+    title: "Ramen",
+    numOfParticipants: 23,
+    deadline: "Soon",
     difficulty: "Medium",
   },
   {
