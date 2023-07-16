@@ -82,10 +82,10 @@ export const challenges: ChallengeSpec[] = [
     difficulty: "Medium",
   },
   {
-    id: "ramen",
-    imgUrl: "/images/challenges/ramen.jpg",
+    id: "square",
+    imgUrl: "/images/challenges/flow.png",
     pricing: "Premium",
-    title: "Ramen",
+    title: "Flow",
     numOfParticipants: 23,
     deadline: "Soon",
     difficulty: "Medium",
