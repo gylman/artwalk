@@ -1,7 +1,7 @@
-# ArtWalk
-Project for the Flow Hackathon Season 2
+# ArtWalk: Flow Hackathon Season 2
 
-Choose the AI generated template, try to copy it by walking, mint NFT if succed
+Mint NFTs based on the creative and competitive image challenges provided to you, which you should follow by the path of your walking steps.
+
 
 # Structure
 
