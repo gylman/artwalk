@@ -39,12 +39,16 @@ export function Challenges() {
     setTabIndex(newValue);
   };
 
-  const filteredChallenges = useMemo(() =>
-    challenges.filter((challenge) => (
-      (values.difficulty === "All" ||
-        challenge.difficulty === values.difficulty) &&
-      (values.pricing === "All" || challenge.pricing === values.pricing)
-    )), [values]);
+  const filteredChallenges = useMemo(
+    () =>
+      challenges.filter(
+        (challenge) =>
+          (values.difficulty === "All" ||
+            challenge.difficulty === values.difficulty) &&
+          (values.pricing === "All" || challenge.pricing === values.pricing),
+      ),
+    s[values],
+  );
 
   const navigate = useNavigate();
   const [currentChallenge] = useAtom(currentChallengeAtom);
@@ -104,10 +108,7 @@ export function Challenges() {
         </Button>
         <ChallengesContainer>
           {filteredChallenges.map((challenge) => (
-            <Challenge
-              key={challenge.id}
-              {...challenge}
-            />
+            <Challenge key={challenge.id} {...challenge} />
           ))}
           {filteredChallenges.length === 0 && (
             <>
@@ -123,9 +124,7 @@ export function Challenges() {
                 There is no such challenge!
               </Typography>
 
-              <Typography
-                sx={{ color: "#626362", textAlign: "center" }}
-              >
+              <Typography sx={{ color: "#626362", textAlign: "center" }}>
                 Try to change filter settings.
               </Typography>
             </>
@@ -158,7 +157,7 @@ export function Challenges() {
   );
 }
 
-function TabPanel(props) {
+export function TabPanel(props) {
   const { children, value, index } = props;
 
   return (

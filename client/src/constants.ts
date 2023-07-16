@@ -5,6 +5,7 @@ export type ChallengeSpec = {
   title: string;
   numOfParticipants: number;
   deadline: string;
+  isFavorite: boolean;
   difficulty: "Easy" | "Medium" | "Hard" | "Expert";
 };
 
@@ -17,6 +18,7 @@ export const challenges: ChallengeSpec[] = [
     numOfParticipants: 23,
     deadline: "Soon",
     difficulty: "Medium",
+    isFavorite: false,
   },
   {
     id: "sea_scape",
@@ -26,6 +28,7 @@ export const challenges: ChallengeSpec[] = [
     numOfParticipants: 23,
     deadline: "7/28/2023, 6:28:11 PM",
     difficulty: "Medium",
+    isFavorite: true,
   },
   {
     id: "alien",
@@ -35,6 +38,7 @@ export const challenges: ChallengeSpec[] = [
     numOfParticipants: 23,
     deadline: "8/12/2023, 4:48:49 AM",
     difficulty: "Medium",
+    isFavorite: false,
   },
   {
     id: "leaves",
@@ -44,6 +48,7 @@ export const challenges: ChallengeSpec[] = [
     numOfParticipants: 23,
     deadline: "8/15/2023, 5:25:31 PM",
     difficulty: "Medium",
+    isFavorite: true,
   },
   {
     id: "car",
@@ -53,6 +58,7 @@ export const challenges: ChallengeSpec[] = [
     numOfParticipants: 23,
     deadline: "8/16/2023, 12:04:47 PM",
     difficulty: "Medium",
+    isFavorite: false,
   },
   {
     id: "mouth",
@@ -62,6 +68,7 @@ export const challenges: ChallengeSpec[] = [
     numOfParticipants: 23,
     deadline: "8/18/2023, 10:18:17 PM",
     difficulty: "Medium",
+    isFavorite: true,
   },
   {
     id: "mountain",
@@ -71,6 +78,7 @@ export const challenges: ChallengeSpec[] = [
     numOfParticipants: 23,
     deadline: "8/2/2023, 10:36:42 AM",
     difficulty: "Medium",
+    isFavorite: false,
   },
   {
     id: "moth",
@@ -80,6 +88,7 @@ export const challenges: ChallengeSpec[] = [
     numOfParticipants: 23,
     deadline: "8/26/2023, 10:02:56 PM",
     difficulty: "Medium",
+    isFavorite: true,
   },
   {
     id: "pianist",
@@ -89,6 +98,7 @@ export const challenges: ChallengeSpec[] = [
     numOfParticipants: 23,
     deadline: "8/4/2023, 7:41:32 PM",
     difficulty: "Medium",
+    isFavorite: true,
   },
   {
     id: "tree_easy",
@@ -98,6 +108,7 @@ export const challenges: ChallengeSpec[] = [
     numOfParticipants: 23,
     deadline: "8/5/2023, 1:42:01 PM",
     difficulty: "Easy",
+    isFavorite: false,
   },
   {
     id: "tree_difficult",
@@ -107,6 +118,7 @@ export const challenges: ChallengeSpec[] = [
     numOfParticipants: 248,
     deadline: "8/6/2023, 5:16:35 AM",
     difficulty: "Hard",
+    isFavorite: true,
   },
   {
     id: "tree_hard",
@@ -116,6 +128,7 @@ export const challenges: ChallengeSpec[] = [
     numOfParticipants: 3,
     deadline: "9/3/2023, 3:14:20 PM",
     difficulty: "Medium",
+    isFavorite: true,
   },
   {
     id: "tree_expert",
@@ -125,6 +138,7 @@ export const challenges: ChallengeSpec[] = [
     numOfParticipants: 5667,
     deadline: "9/4/2023, 12:16:46 PM",
     difficulty: "Expert",
+    isFavorite: false,
   },
   {
     id: "tree_medium",
@@ -134,5 +148,6 @@ export const challenges: ChallengeSpec[] = [
     numOfParticipants: 5667,
     deadline: "9/5/2023, 8:58:38 AM",
     difficulty: "Expert",
+    isFavorite: true,
   },
 ];

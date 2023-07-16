@@ -1,5 +1,5 @@
-import { atomWithStorage } from "jotai/utils";
-import type { RgbColor } from "react-colorful";
+import { atomWithStorage } from 'jotai/utils';
+import type { RgbColor } from 'react-colorful';
 
 export type PathStyle = {
   lineWidth: number; // approximately in meters
@@ -12,12 +12,12 @@ export interface StyledPathGroup {
 }
 
 export const styledPathGroupsAtom = atomWithStorage<StyledPathGroup[]>(
-  "styledPathGroups",
-  JSON.parse(localStorage.getItem("styledPathGroups") ?? "[]")
+  'styledPathGroups',
+  JSON.parse(localStorage.getItem('styledPathGroups') ?? '[]')
 );
 
 export const currentChallengeAtom = atomWithStorage<string | null>(
-  "currentChallenge",
+  'currentChallenge',
   null
 );
 
@@ -26,11 +26,13 @@ export type ChallengeState = {
   similarity: number;
   endAt: number;
   isSubmitted: boolean;
+  isOngoing: boolean;
   isResultShown: boolean;
   isToastShown: boolean;
   isMinted: boolean;
+  isFavorite: boolean;
 };
 
 export const challengeStatesAtom = atomWithStorage<
   Record<string, ChallengeState>
->("challengeStates", {});
+>('challengeStates', {});
