@@ -1,11 +1,13 @@
 import { PeopleOutline } from "@mui/icons-material";
 import { Button, Card, CardActions, CardMedia } from "@mui/material";
 import { useAtom } from "jotai";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import type { ChallengeSpec } from "../constants";
 import { challengeStatesAtom } from "../state";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { challenges } from "../constants";
 
 const Tag = styled.div`
   position: absolute;
@@ -25,6 +27,12 @@ const Tag = styled.div`
   font-weight: 400;
   line-height: 138.462%;
   letter-spacing: 0.16px;
+`;
+
+const Favorite = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
 `;
 
 const Content = styled.div`
@@ -69,13 +77,33 @@ const Title = styled.span`
 `;
 
 export const Challenge = (props: ChallengeSpec) => {
-  const [challengeStates] = useAtom(challengeStatesAtom);
+  const [challengesState, setChallengesState] = useState(challenges);
+  const [challengeStates, setChallengeStates] = useAtom(challengeStatesAtom);
   const now = useMemo(() => Date.now(), []);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const handleToggleFavorite = (id:string) => {
+    setChallengesState((prevItems) => {
+      return prevItems.map((item) => {
+        if (item.id === id) {
+          return { ...item, isFavorite: !item.isFavorite };
+        }
+        return item;
+      });
+    });
+  };
 
   return (
     <Card
       sx={{ width: "100%", backgroundColor: "#7135C7", position: "relative" }}
     >
+      <Favorite
+        onClick={() => {
+          handleToggleFavorite(props.id);
+        }}
+      >
+        <FavoriteIcon color={props.isFavorite ? "primary" : "secondary"} />
+      </Favorite>
       <Tag>{props.pricing}</Tag>
       <CardMedia
         component="img"
@@ -94,6 +122,18 @@ export const Challenge = (props: ChallengeSpec) => {
           <Text>Difficulty</Text>
           <Text>{props.difficulty}</Text>
         </Row>
+        {challengeStates[props.id]?.isSubmitted && (
+          <Row>
+            <Text>Length</Text>
+            <Text>10km</Text>
+          </Row>
+        )}
+        {challengeStates[props.id]?.isSubmitted && (
+          <Row>
+            <Text>Time spent</Text>
+            <Text>20mins</Text>
+          </Row>
+        )}
         <Row>
           <Text>Deadline</Text>
           <Text>
