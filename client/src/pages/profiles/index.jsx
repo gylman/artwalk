@@ -10,7 +10,7 @@ function getUser(slug) {
     id: "jane.doe",
     fullName: "Jane Doe",
     profileImageUrl:
-      "https://avataaars.io/?avatarStyle=Circle&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light",
+      "https://avataaars.io/?accessoriesType=Sunglasses&avatarStyle=Circle&clotheColor=Black&clotheType=Hoodie&eyeType=Close&eyebrowType=FlatNatural&facialHairColor=Black&facialHairType=BeardMajestic&graphicType=Resist&hairColor=BrownDark&hatColor=Gray01&mouthType=Serious&skinColor=Light&topType=NoHair",
   };
 }
 
