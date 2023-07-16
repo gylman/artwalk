@@ -13,6 +13,7 @@ import { Turtle } from "../../components/Turtle";
 import { useNow } from "../../hooks/useNow";
 import { useWarnOnBackButton } from "../../hooks/useWarnOnBackButton";
 import { challengeStatesAtom, currentChallengeAtom } from "../../state";
+import { challenges } from "../../constants";
 
 export function Walk() {
   const { slug } = useParams();
@@ -20,7 +21,7 @@ export function Walk() {
   const { clear, isEnabled, setIsEnabled, continueWalk } = useMapContext();
 
   const [isImageDisplayOpen, setIsImageDisplayOpen] = useState(false);
-  const [, setCurrentChallenge] = useAtom(currentChallengeAtom);
+  const [currentChallenge, setCurrentChallenge] = useAtom(currentChallengeAtom);
   const [challengeStates] = useAtom(challengeStatesAtom);
 
   const onBackButtonCallback = useCallback(() => {
@@ -94,12 +95,15 @@ export function Walk() {
             }}
             onClick={() => setIsImageDisplayOpen(true)}
           >
-            <Turtle
-              style={{
-                width: "100%",
-                height: "100%",
-              }}
-            />
+            {
+              <img
+                src={challenges.find(({ id }) => id === currentChallenge)
+                  ?.imgUrl ?? ""}
+                style={{
+                  mixBlendMode: "multiply",
+                }}
+              />
+            }
           </ButtonBase>
         }
       />
@@ -177,7 +181,14 @@ export function Walk() {
           },
         }}
       >
-        <Turtle style={{ width: "100%", height: "100%", color: "#7135C7" }} />
+        <img
+          src={challenges.find(({ id }) => id === currentChallenge)
+            ?.imgUrl ?? ""}
+          style={{
+            mixBlendMode: "multiply",
+          }}
+        />
+        {/* <Turtle style={{ width: "100%", height: "100%", color: "#7135C7" }} /> */}
       </Dialog>
     </Layout>
   );
