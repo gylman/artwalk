@@ -1,0 +1,7 @@
+{
+  "schema": "./lib/drizzle/schema.ts",
+  "driver": "mysql2",
+  "dbCredentials": {
+    "connectionString": ""
+  }
+}
