@@ -3,7 +3,7 @@
 # ArtWalk Flow Hackathon Season 2
 Project for the Flow Hackathon Season 2
 
-[Award Ceremony](https://link-url-here.org](https://www.youtube.com/watch?v=ItgQHDMVNwo&t=1052s)\
+[Award Ceremony](https://www.youtube.com/watch?v=ItgQHDMVNwo&t=1052s)\
 [Demo](https://vimeo.com/846122556)\
 [Project](https://devfolio.co/projects/artwalk-f198)\
 
