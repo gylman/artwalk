@@ -1,4 +1,8 @@
 # This project won the 1st place on the gaming track of Flow Hackathon Season 2
+
+https://www.youtube.com/watch?v=ItgQHDMVNwo&t=1052s
+https://lnkd.in/g9KqDdyh
+
 # ArtWalk Flow Hackathon Season 2
 Project for the Flow Hackathon Season 2
 
