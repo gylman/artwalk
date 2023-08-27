@@ -1,11 +1,11 @@
 # This project won the 1st place on the gaming track of Flow Hackathon Season 2
 
-[Award Ceremony](https://link-url-here.org](https://www.youtube.com/watch?v=ItgQHDMVNwo&t=1052s)
-[Demo] (https://vimeo.com/846122556)
-[Project] (https://devfolio.co/projects/artwalk-f198)
-
 # ArtWalk Flow Hackathon Season 2
 Project for the Flow Hackathon Season 2
+
+[Award Ceremony] (https://link-url-here.org](https://www.youtube.com/watch?v=ItgQHDMVNwo&t=1052s)\
+[Demo] (https://vimeo.com/846122556)\
+[Project] (https://devfolio.co/projects/artwalk-f198)\
 
 Choose the AI generated template, try to copy it by walking, mint NFT if succeed
 
