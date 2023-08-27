@@ -1,4 +1,4 @@
-# This project won the 1st place on the gaming track of Flow Hackathon Season 2
+# Winner of the 1st place on the gaming track of Flow Hackathon Season 2
 
 # ArtWalk Flow Hackathon Season 2
 Project for the Flow Hackathon Season 2
